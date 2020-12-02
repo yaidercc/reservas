@@ -1,0 +1,70 @@
+
+.container{
+     width: 800px;
+     height: 100vh;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+}
+.container-formulario .formulario input{
+     margin-bottom: 20px;
+     margin-right: 40px;
+}
+.container-formulario .formulario  .centrales  .columna-derecha  .inputs .fin,.hinicio {
+     width: 100px;
+}
+.container-formulario{
+     padding: 50px;
+     box-shadow: 4px 3px 4px 3px rgba(0, 0, 0, 0.2);
+}
+.container-formulario .formulario{
+     display: grid;
+     grid-template-areas: "Reservas"
+                         "formularios"
+                         "btn";
+     grid-template-rows: 200px;
+}
+.container-formulario .formulario .centrales{
+     grid-area: formularios;
+     display: grid;
+     grid-template-areas: "izquierda derecha";
+     grid-gap: 10px;
+     grid-template-columns: 50% 50%;
+}
+
+.container-formulario .formulario  .centrales  .columna-derecha .Horarios{
+     display: grid;
+     grid-template-areas: "input-izquierdo input-derecho";
+     grid-template-columns: 50% 50%;
+}
+
+.container-formulario .formulario  .centrales  .columna-derecha .Horarios .hinicio{
+     grid-area: input-izquierdo;
+}
+
+.container-formulario .formulario  .centrales  .columna-derecha .Horarios .fin{
+     grid-area: input-derecho;
+}
+
+.container-formulario .formulario .inicio{
+     grid-area: Reservas;
+}
+
+.container-formulario .formulario .centrales .columna-derecha{
+     grid-area: derecha;
+}
+
+.container-formulario .formulario .centrales .columna-izquierda{
+     grid-area: izquierda;
+}
+
+.container-formulario .formulario .btn-reserva{
+     grid-area: btn;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+}
+
+.container-formulario .formulario .btn-reserva .btn{
+
+}

@@ -12,22 +12,24 @@
      <script src="https://kit.fontawesome.com/2efdabf6ca.js" crossorigin="anonymous"></script>
      <link rel="stylesheet" href="Css/normalice.css" crossorigin="anonymous">
      <link rel="stylesheet" href="Css/Estilos.css" crossorigin="anonymous">
-     <script src="js/Funciones.js"></script>
+
      <title>Reservar</title>
 </head>
 
 <body>
      <div class="section-1 container-login">
-          <form action="">
+          <form action="#" id="form-login">
                <h1>iniciar sesion</h1>
                <div class="form-group">
                     <label class="col-lg-6 control-label">Ingrese su numero de documento</label>
-                    <input type="text" placeholder="cedula" class="form-control">
+                    <input type="text" name="cedula" placeholder="cedula" class="form-control">
                </div>
-               <input type="submit" class="btn-primary" value="Ingresar">
+               <input type="submit" id="mostrar" class="btn-primary" value="Ingresar">
           </form>
+          
      </div>
-     <div class="section-2 form-container">
+     <h1 class="hola">holaaa</h1>
+     <divclass="section-2 form-container">
           <form action="php/ingresar.php">
                <h1>Reservar</h1>
                <div class="container-inputs">
@@ -82,7 +84,9 @@
           </div>
 
      </div>
-
+     <script src="js/Funciones.js"></script>
+     <script src="librerias/sweetalert.min.js"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </body>
 
 </html>

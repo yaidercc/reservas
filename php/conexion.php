@@ -1,9 +1,7 @@
 <?php
      $conexion=mysqli_connect("localhost","root","","reservas_staff_bd");
-     if($conexion){
-          echo "melo";
-     }else{
-          echo "melo";
+     if(!$conexion){
+          echo "error";
      }
 
 ?>

@@ -88,3 +88,22 @@ $("input[type='radio']").on("change",this,function(){
   });
 })
 
+jQuery(document).on("submit", "#form_reservar", function (event) {
+  event.preventDefault();
+  jQuery
+    .ajax({
+      url: "php/reserva.php",
+      type: "POST",
+      dataType: "json",
+      data: $(this).serialize(),
+      beforeSend: function () {},
+    })
+    .done(function (resp) {
+      console.log(resp);
+    })
+    .fail(function (resp) {
+      console.log("no paso");
+      //swal("Error", "error inesperado al realizar la consulta", "error");
+    });
+});
+

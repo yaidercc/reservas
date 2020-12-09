@@ -39,7 +39,7 @@ session_start();
           </ul>
      </nav>
      <div class="form-container">
-          <form action="php/reservar.php?cedula=<?php$_SESSION['cedula']?>" method="POST">
+          <form action="#" id="form_reservar">
                <h1>Reservar</h1>
                <div class="container-inputs">
                     <div class="form-group">
@@ -54,17 +54,17 @@ session_start();
 
                     <div class="form group">
                          <label class="col-lg-6 control-label"><span class="text-title">fecha de reserva</span><span class="text-danger">*</span></label>
-                         <input type="date" name="fecha" class="hinicio form-control">
+                         <input type="date" name="fecha" value="09/12/2020" class="form-control">
                     </div>
 
                     <div class="form group">
                          <label class="hinicio col-lg-6 control-label"><span class="text-title">hora inicio</span><span class="text-danger">*</span></label>
-                         <input type="time" name="Hinicio" class="hfinal form-control">
+                         <input type="time" name="Hinicio" value="8:55 am" class="horin form-control">
                     </div>
 
                     <div class="form group">
                          <label class="col-lg-6 control-label"><span class="text-title">hora final</span><span class="text-danger">*</span></label>
-                         <input type="time" name="Hfinal" class="hfinal form-control">
+                         <input type="time" name="Hfinal"value="9:55 am"  class="hfinal form-control">
                     </div>
 
                     <div class="form group">

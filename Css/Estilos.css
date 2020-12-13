@@ -1,0 +1,48 @@
+:root {
+  --azul-claro: #096ba7;
+}
+html {
+/** resete para rems - 62.5%=10px**/
+}
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  text-transform: capitalize;
+}
+
+
+.overlay-modulos {
+  background: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+}
+.overlay-modulos.active {
+  visibility: visible;
+}
+.popup {
+  background-color: #f8f8f8f8;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  
+}
+
+.popup .btn-cerrar-popup {
+  font-size: 16px;
+  line-height: 16px;
+  display: block;
+  text-align: right;
+  color: #bbbbbb;
+  transition: 0.3s ease all;
+}
+
+.popup .btn-cerrar-popup:hover {
+  color: var(--azul-claro);
+}

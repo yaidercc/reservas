@@ -39,7 +39,7 @@ session_start();
           </ul>
      </nav>
      <div class="form-container">
-          <form action="#" id="form_reservar">
+          <form action="#" method="POST">
                <h1>Reservar</h1>
                <div class="container-inputs">
                     <div class="form-group">
@@ -54,22 +54,22 @@ session_start();
 
                     <div class="form group">
                          <label class="col-lg-6 control-label"><span class="text-title">fecha de reserva</span><span class="text-danger">*</span></label>
-                         <input type="date" name="fecha" value="09/12/2020" class="form-control">
+                         <input type="date" name="fecha" value="09/12/2020" class="form-control" readonly>
                     </div>
 
                     <div class="form group">
                          <label class="hinicio col-lg-6 control-label"><span class="text-title">hora inicio</span><span class="text-danger">*</span></label>
-                         <input type="time" name="Hinicio" value="8:55 am" class="horin form-control">
+                         <input type="time" name="Hinicio" value="8:55 am" class="horin form-control" readonly>
                     </div>
 
                     <div class="form group">
                          <label class="col-lg-6 control-label"><span class="text-title">hora final</span><span class="text-danger">*</span></label>
-                         <input type="time" name="Hfinal"value="9:55 am"  class="hfinal form-control">
+                         <input type="time" name="Hfinal" value="9:55 am" class="hfinal form-control" readonly>
                     </div>
 
                     <div class="form group">
                          <label class="col-lg-6 control-label"><span class="text-title">Modulo</span><span class="text-danger"></span></label>
-                         <input type="text" id="modulo" name="modulo" class="form-control" readonly >
+                         <input type="text" id="modulo" name="modulo" class="form-control" readonly>
                     </div>
 
                     <!--<div class="form group">
@@ -77,45 +77,46 @@ session_start();
                          <span>Modulo: </span>
                     </div>-->
                </div>
-               <input type="submit" class="btn-primary" value="Reservar">
-
+               <input type="button" class="btn-primary" name="person" value="Reservar" id="">
+               <input type="button" class="btn-primary" value="elejir" id="elejir">
           </form>
      </div>
 
-     <div class="overlay-modules">
-          <div class="popup">
-               <div class="radio-modulo">
-                    <h1>Modulos</h1>
-                    <?php
-                    include "php/conexion.php";
-                    $Consulta_modulos = mysqli_query($conexion, "SELECT * FROM modulos");
-                    while ($row = mysqli_fetch_array($Consulta_modulos)) { ?>
-                         <?php
-                         $Consulta_reservas = mysqli_query($conexion, "SELECT * FROM reservas WHERE cod_modulo_fk=$row[cod_modulo]");
-                         $datos = $Consulta_reservas->fetch_assoc();
-                         if ($datos > 0 && $datos['estado'] == "ocupado") { ?>
-                              <input type="radio" name="modulo" disabled>
-                              <span class="is-valid"><?php echo "modulo", $row['cod_modulo'] ?></span>
-                              <label><span class="fas fa-check-circle"></span><span>ocupado</span></label>
-                         <?php
-                         } else { ?>
+     <div id="overlay" class="overlay-modulos ">
+          <div class="popup " id="popup">
+               <a href="#" id="btn-cerrar-popup" class="btn-cerrar-popup"> <i class="fas fa-times"></i></a>
+               <h1>modulos disponibles</h1>
+               <div class="header">
+                    <form action="#" id="buscar-modulos">
+                         <div class="form group">
+                              <label class="col-lg-6 control-label"><span class="text-title">fecha de reserva</span><span class="text-danger">*</span></label>
+                              <input type="date" name="fecha" value="09/12/2020" class="fecha form-control" >
+                         </div>
+                         <div class="form group">
+                              <label class="hinicio col-lg-6 control-label"><span class="text-title">hora inicio</span><span class="text-danger">*</span></label>
+                              <input type="time" id="hora_in" name="Hinicio" class="horin form-control" >
+                         </div>
 
-                              <span class="is-valid"><?php echo "modulo ", $row['cod_modulo'] ?>
-                                   <input type="radio" class="modul" value="<?php echo $row['cod_modulo'] ?>">
-                              </span>
-                              <label><span class="fas fa-check-circle"></span><span>Disponible</span></label>
-                         <?php
-                         } ?>
-                    <?php
-                    }
-                    ?>
+                         <div class="form group">
+                              <label class="col-lg-6 control-label"><span class="text-title">hora final</span><span class="text-danger">*</span></label>
+                              <input type="time" id="hora_fin" name="Hfinal" class="hfinal form-control" >
+                         </div>
+                         <div class="form group">
+                              <label class="col-lg-6 control-label"><span class="text-title">Modulo</span><span class="text-danger"></span></label>
+                              <input type="text" id="num_modulo" name="modulo" class="form-control">
+                         </div>
 
+                         <input type="submit" class="btn-primary" id="select-modulo" value="Elejir">
+                    </form>
+                    <div class="contenedor-modulos">
 
+                    </div>
                </div>
-               <input type="submit" class="btn-primary" id="select-modulo" value="Elejir" disabled>
+
           </div>
 
      </div>
+     <script src="js/jquery-v1.min.js"></script>
      <script src="js/Funciones.js"></script>
      <script src="librerias/sweetalert2.all.min.js"></script>
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

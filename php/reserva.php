@@ -28,7 +28,7 @@
      if($verificar){
           echo json_encode($verificar);
      }else{
-          echo json_encode(array("hola"=>"nada"));
+          echo json_encode($array);
      }
 
 

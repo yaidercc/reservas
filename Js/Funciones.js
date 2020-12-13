@@ -1,3 +1,19 @@
+var abrirpopup = document.getElementById("elejir"),
+  overlay = document.getElementById("overlay"),
+  popup = document.getElementById("popup");
+btncerrar = document.getElementById("btn-cerrar-popup");
+if (abrirpopup && btncerrar) {
+  btncerrar.addEventListener("click", function (e) {
+    e.preventDefault();
+    overlay.classList.remove("active");
+    popup.classList.remove("active");
+  });
+  abrirpopup.addEventListener("click", function () {
+    overlay.classList.add("active");
+    popup.classList.add("active");
+  });
+}
+
 jQuery(document).on("submit", "#form-login", function (event) {
   event.preventDefault();
   jQuery
@@ -63,10 +79,10 @@ for (var i = 0; i < modulo_seleccionado; i++) {
 }*/
 
 //seleccionar un modulo y reflejarlo en un input
-$("input[type='radio']").on("change",this,function(){
-  valor=$(this).val();
-  $('#select-modulo').prop("disabled",false);
-  $('#select-modulo').on("click",function(){
+$("input[type='radio']").on("change", this, function () {
+  valor = $(this).val();
+  $("#select-modulo").prop("disabled", false);
+  $("#select-modulo").on("click", function () {
     Swal.fire({
       title: "Adevertencia!",
       text: "Estas seguro que deseas seleccionar este modulo?",
@@ -77,33 +93,46 @@ $("input[type='radio']").on("change",this,function(){
       confirmButtonText: "Si, seleccionar",
     }).then((result) => {
       if (result.isConfirmed) {
-        $("#modulo").attr("value",valor);
+        $("#modulo").attr("value", valor);
         $("#modulo").addClass("is-valid");
-      }else{
-        $("input[type=radio]").prop('checked', false);
+        overlay.classList.add("active");
+        popup.classList.add("active");
+      } else {
+        $("input[type=radio]").prop("checked", false);
         console.log("declined");
       }
-  })
-  
+    });
   });
-})
-
-jQuery(document).on("submit", "#form_reservar", function (event) {
+});
+jQuery(document).on("submit", "#buscar-modulos", function (event) {
   event.preventDefault();
+  var modulo=$("#num_modulo").val();
+  var hinicio=$("#hora_fin").val();
+  var hfinal=$("#hora_in").val();
+  var fecha=$(".fecha").val();
+
+  buscar(modulo,hinicio,hfinal,fecha);
+ 
+});
+function buscar(modulo,hinicio,hfinal,fecha) {
   jQuery
     .ajax({
-      url: "php/reserva.php",
+      url: "php/modulos-disponibles.php",
       type: "POST",
-      dataType: "json",
-      data: $(this).serialize(),
-      beforeSend: function () {},
+      dataType: "html",
+      data:{
+        modulo:modulo,
+        hinicio:hinicio,
+        hfinal:hfinal,
+        fecha:fecha
+      },
+      
     })
     .done(function (resp) {
-      console.log(resp);
+      $(".contenedor-modulos").html(resp);
     })
     .fail(function (resp) {
       console.log("no paso");
       //swal("Error", "error inesperado al realizar la consulta", "error");
     });
-});
-
+}

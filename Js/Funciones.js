@@ -104,16 +104,37 @@ $("input[type='radio']").on("change", this, function () {
     });
   });
 });
-jQuery(document).on("submit", "#buscar-modulos", function (event) {
+// forma abreviada de document.ready, pero en una funcion
+
+// al darle click a buscar modulo se va a desplegar esta funcion de jquery
+jQuery(document).on("click", "#select-modulo", function (event) {
   event.preventDefault();
   var modulo=$("#num_modulo").val();
   var hinicio=$("#hora_fin").val();
   var hfinal=$("#hora_in").val();
   var fecha=$(".fecha").val();
+  if(hinicio=="" || hfinal=="" || fecha==""){
+    if(hfinal==""){
+      $("#hora_fin").addClass("is-invalid");
+    }
+     if(hinicio==""){
+      $("#hora_in").addClass("is-invalid");
+    }
+    if(fecha==""){
+      $(".fecha").addClass("is-invalid");
+    }
+  
+  }else{
+    $("#hora_in").removeClass("is-invalid");
+    $("#hora_fin").removeClass("is-invalid");
+    $(".fecha").removeClass("is-invalid");
+    buscar(modulo,hinicio,hfinal,fecha);
+  }
 
-  buscar(modulo,hinicio,hfinal,fecha);
+  
  
 });
+//funcion para buscar los modulos
 function buscar(modulo,hinicio,hfinal,fecha) {
   jQuery
     .ajax({
@@ -129,10 +150,43 @@ function buscar(modulo,hinicio,hfinal,fecha) {
       
     })
     .done(function (resp) {
-      $(".contenedor-modulos").html(resp);
+      $(".container").html(resp);
     })
     .fail(function (resp) {
       console.log("no paso");
       //swal("Error", "error inesperado al realizar la consulta", "error");
     });
 }
+
+//poner valor del radio button en el input de modulo
+$("#elejir").on("click", function(){
+  
+  $(".radio-modulo").on("click", function(){
+    $("aceptar").prop("disabled", false);
+    var valorRadio=$(this).val();
+    $("#num_modulo").val(valorRadio);
+    jQuery(document).on("submit",function(){
+      Swal.fire({
+        title: "Adevertencia!",
+        text: "Estas seguro que deseas seleccionar este modulo?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, seleccionar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          /*$("aceptar").prop("disabled", false);
+          var valorRadio=$(this).val();
+          $("#num_modulo").val(valorRadio);*/
+          console.log("hello")
+        } else {
+          $("input[type=radio]").prop("checked", false);
+          console.log("declined");
+        }
+      });
+    })
+      
+  })
+
+})

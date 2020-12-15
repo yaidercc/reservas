@@ -54,17 +54,17 @@ session_start();
 
                     <div class="form group">
                          <label class="col-lg-6 control-label"><span class="text-title">fecha de reserva</span><span class="text-danger">*</span></label>
-                         <input type="date" name="fecha" value="09/12/2020" class="form-control" readonly>
+                         <input type="date" name="fecha" value="09/12/2020" class="form-control">
                     </div>
 
                     <div class="form group">
                          <label class="hinicio col-lg-6 control-label"><span class="text-title">hora inicio</span><span class="text-danger">*</span></label>
-                         <input type="time" name="Hinicio" value="8:55 am" class="horin form-control" readonly>
+                         <input type="time" name="Hinicio" value="8:55 am" class="horin form-control">
                     </div>
 
                     <div class="form group">
                          <label class="col-lg-6 control-label"><span class="text-title">hora final</span><span class="text-danger">*</span></label>
-                         <input type="time" name="Hfinal" value="9:55 am" class="hfinal form-control" readonly>
+                         <input type="time" name="Hfinal" value="9:55 am" class="hfinal form-control">
                     </div>
 
                     <div class="form group">
@@ -86,32 +86,37 @@ session_start();
           <div class="popup " id="popup">
                <a href="#" id="btn-cerrar-popup" class="btn-cerrar-popup"> <i class="fas fa-times"></i></a>
                <h1>modulos disponibles</h1>
-               <div class="header">
-                    <form action="#" id="buscar-modulos">
-                         <div class="form group">
+               <form action="#" id="buscar-modulos">
+                    <div class="header">
+                         <div class="form-group">
                               <label class="col-lg-6 control-label"><span class="text-title">fecha de reserva</span><span class="text-danger">*</span></label>
-                              <input type="date" name="fecha" value="09/12/2020" class="fecha form-control" >
+                              <input type="date" name="fecha" value="09/12/2020" class="fecha form-control" required>
                          </div>
-                         <div class="form group">
+                         <div class="form-group">
                               <label class="hinicio col-lg-6 control-label"><span class="text-title">hora inicio</span><span class="text-danger">*</span></label>
-                              <input type="time" id="hora_in" name="Hinicio" class="horin form-control" >
+                              <input type="time" id="hora_in" name="Hinicio" class="horin form-control" required>
                          </div>
 
-                         <div class="form group">
+                         <div class="form-group">
                               <label class="col-lg-6 control-label"><span class="text-title">hora final</span><span class="text-danger">*</span></label>
-                              <input type="time" id="hora_fin" name="Hfinal" class="hfinal form-control" >
+                              <input type="time" id="hora_fin" name="Hfinal" class="hfinal form-control" required>
                          </div>
-                         <div class="form group">
+                         <div class="form-group">
                               <label class="col-lg-6 control-label"><span class="text-title">Modulo</span><span class="text-danger"></span></label>
                               <input type="text" id="num_modulo" name="modulo" class="form-control">
                          </div>
+                         <a href="#" id="select-modulo">elejir</a>
 
-                         <input type="submit" class="btn-primary" id="select-modulo" value="Elejir">
-                    </form>
-                    <div class="contenedor-modulos">
+
 
                     </div>
-               </div>
+                    <input type="submit" value="aceptar" id="aceptar" class="btn-primary" disabled>
+                    <div class="container">
+                         <!--CARGAN LOS MODULOS-->
+                    </div>
+               </form>
+
+
 
           </div>
 

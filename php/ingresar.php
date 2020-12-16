@@ -14,9 +14,10 @@
                $_SESSION['segundo_nombre'] = $datos['segundo_nombre'];
                $_SESSION['primer_apellido'] = $datos['primer_apellido'];
                $_SESSION['segundo_apellido'] = $datos['segundo_apellido'];
+               
                if($datos>0){
                     echo json_encode(array('respuesta' =>true ,'nombre' =>$datos['primer_nombre']));
- 
+                    $_SESSION['cedula']=$cedula;
                }else{
                     echo json_encode(array('respuesta' =>false));//manda datos al archivo
                }

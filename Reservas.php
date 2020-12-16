@@ -1,6 +1,14 @@
 <?php
 include 'php/conexion.php';
 session_start();
+//validamos si se ha hecho o no el inicio de sesion correctamente
+//si no se ha hecho la sesion nos regresará a login.php
+if (!isset($_SESSION['cedula'])) {
+
+     header('Location: login.php');
+
+     exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +40,7 @@ session_start();
                <li><a href="#">
                          <ion-icon name="calendar"></ion-icon> <span>mis reservas</span>
                     </a></li>
-               <li> <a href="#" id="salir">
+               <li> <a href="php/logout.php" id="salir">
                          <ion-icon name="power"></ion-icon><span>salir</span>
                     </a></li>
 

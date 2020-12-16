@@ -110,8 +110,8 @@ $("input[type='radio']").on("change", this, function () {
 jQuery(document).on("click", "#select-modulo", function (event) {
   event.preventDefault();
   var modulo=$("#num_modulo").val();
-  var hinicio=$("#hora_fin").val();
-  var hfinal=$("#hora_in").val();
+  var hinicio=$("#hora_in").val();
+  var hfinal=$("#hora_fin").val();
   var fecha=$(".fecha").val();
   if(hinicio=="" || hfinal=="" || fecha==""){
     if(hfinal==""){

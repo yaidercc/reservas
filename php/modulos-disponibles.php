@@ -31,14 +31,14 @@ if (mysqli_num_rows($query) > 0) {
                if ($sw == 1) {
                     if ($verificador) {
                          $verificar = "<div class='modulo'>
-                         <input type='radio' name='modulo' class='radio-modulo disponible' value='$row[cod_modulo_fk]' >
+                         <input type='radio' name='modulo' class='radio-modulo' value='$row[cod_modulo_fk]' >
                          <h1>Modulo $row[cod_modulo_fk]</h1>
                          <p><i class='fas fa-check-circle'></i><span>disponible</span></p>
                     </div>";
                     }
                } else {
                     $verificar .= "<div class='modulo'>
-                         <input type='radio' name='modulo' class='radio-modulo disponible' value='$row[cod_modulo_fk]' >
+                         <input type='radio' name='modulo' class='radio-modulo' value='$row[cod_modulo_fk]' >
                          <h1>Modulo $row[cod_modulo_fk]</h1>
                          <p><i class='fas fa-check-circle'></i><span>disponible</span></p>
                     </div>";
@@ -47,7 +47,7 @@ if (mysqli_num_rows($query) > 0) {
                if ($sw == 1) {
                     $verificador = false;
                     $verificar = "<div class='modulo'>
-                    <input type='radio' name='modulo' class='radio-modulo disponible' value='$row[cod_modulo_fk]' >
+                    <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo_fk]' >
                     <h1>Modulo $row[cod_modulo_fk]</h1>
                     <p><i class='fas fa-check-circle'></i><span>no disosiponible</span></p>
                </div>";

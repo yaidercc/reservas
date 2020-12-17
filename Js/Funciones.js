@@ -160,12 +160,14 @@ function buscar(modulo,hinicio,hfinal,fecha) {
 
 //poner valor del radio button en el input de modulo
 $("#elejir").on("click", function(){
-  
+  console.log("dio");
+  $("#aceptar").prop("disabled", false);
   $(".radio-modulo").on("click", function(){
-    $("aceptar").prop("disabled", false);
+   
     var valorRadio=$(this).val();
+    console.log("dio2");
     $("#num_modulo").val(valorRadio);
-    jQuery(document).on("submit",function(){
+    jQuery(document).on("click","#aceptar",function(){
       Swal.fire({
         title: "Adevertencia!",
         text: "Estas seguro que deseas seleccionar este modulo?",

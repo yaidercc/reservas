@@ -31,23 +31,29 @@ if (!isset($_SESSION['cedula'])) {
 </head>
 
 <body>
-     <nav class="section-3">
-          <ul>
-               <h1>Airplan</h1>
-               <li> <a href="#" id="salir">
-                         <ion-icon name="person"></ion-icon><span><?php echo $_SESSION['primer_nombre']; ?></span>
-                    </a></li>
-               <li><a href="#">
-                         <ion-icon name="calendar"></ion-icon> <span>mis reservas</span>
-                    </a></li>
-               <li> <a href="php/logout.php" id="salir">
-                         <ion-icon name="power"></ion-icon><span>salir</span>
-                    </a></li>
+     <header>
+          <nav class="navegacion-reservas">
+               <div class="menu-burger">
+                    <a href="#">
+                         <ion-icon name="menu"></ion-icon>
+                    </a>
+               </div>
+               <div class="logo">
+                    <img id="logo-air" src="img/logo_airplan.png" height="100px" width="100px">
+               </div>
+               <div class="enlaces">
 
-          </ul>
-     </nav>
+                    <a href="#">
+                         <ion-icon name="calendar"></ion-icon><span>mis reservas</span>
+                    </a>
+                    <a href="php/logout.php" id="salir">
+                         <ion-icon name="power"></ion-icon><span>salir</span>
+                    </a>
+               </div>
+          </nav>
+     </header>
      <div class="form-container">
-          <form action="#" method="POST">
+          <form action="#" id="form-reservar">
                <h1>Reservar</h1>
                <div class="container-inputs">
                     <div class="form-group">
@@ -56,7 +62,7 @@ if (!isset($_SESSION['cedula'])) {
                     </div>
                     <div class="form-group">
                          <label class="col-lg-6 control-label"><span class="text-title">tus apellidos</span><span class="text-danger"></span></label>
-                         <input type="text" class="form-control" value="<?php echo $_SESSION['primer_apellido'], $_SESSION['segundo_apellido'] ?>" readonly>
+                         <input type="text" class="name form-control" value="<?php echo $_SESSION['primer_apellido'], $_SESSION['segundo_apellido'] ?>" readonly>
                     </div>
 
 
@@ -64,36 +70,40 @@ if (!isset($_SESSION['cedula'])) {
                          <label class="col-lg-6 control-label"><span class="text-title">fecha de reserva</span><span class="text-danger">*</span></label>
                          <input type="date" name="fecha" value="09/12/2020" class="form-control">
                     </div>
+                    <div class="horarios">
 
-                    <div class="form group">
-                         <label class="hinicio col-lg-6 control-label"><span class="text-title">hora inicio</span><span class="text-danger">*</span></label>
-                         <input type="time" name="Hinicio" value="8:55 am" class="horin form-control">
+                         <div class="form group">
+                              <label class="control-label"><span class="text-title">hora inicio</span><span class="text-danger">*</span></label>
+                              <input type="time" name="Hinicio" value="8:55 am" class="horin horas form-control">
+                         </div>
+
+                         <div class="form group">
+                              <label class="control-label"><span class="text-title">hora final</span><span class="text-danger">*</span></label>
+                              <input type="time" name="Hfinal" value="" class="hfinal horas form-control">
+                         </div>
+                    </div>
+                    <div class="modulo-grupo">
+                         <input type="button" class="modulo-grp btn-primary" value="elejir modulo" id="elejir">
+                         <div class="input-modulo form group">
+                              <label class="col-lg-6 control-label"><span class="text-title">Modulo</span><span class="text-danger"></span></label>
+                              <input type="text" id="modulo" name="modulo" class="modulo-grp form-control" readonly>
+                         </div>
                     </div>
 
-                    <div class="form group">
-                         <label class="col-lg-6 control-label"><span class="text-title">hora final</span><span class="text-danger">*</span></label>
-                         <input type="time" name="Hfinal" value="9:55 am" class="hfinal form-control">
-                    </div>
-
-                    <div class="form group">
-                         <label class="col-lg-6 control-label"><span class="text-title">Modulo</span><span class="text-danger"></span></label>
-                         <input type="text" id="modulo" name="modulo" class="form-control" readonly>
-                    </div>
 
                     <!--<div class="form group">
                          <input type="submit" class="btn-primary" value="Elejir Modulo">
                          <span>Modulo: </span>
                     </div>-->
                </div>
-               <input type="button" class="btn-primary" name="person" value="Reservar" id="">
-               <input type="button" class="btn-primary" value="elejir" id="elejir">
+               <input type="button" class="btn-primary" name="person" value="Reservar" id="reservar">
+
           </form>
      </div>
 
      <div id="overlay" class="overlay-modulos ">
           <div class="popup " id="popup">
                <a href="#" id="btn-cerrar-popup" class="btn-cerrar-popup"> <i class="fas fa-times"></i></a>
-               <h1>modulos disponibles</h1>
                <form action="#" id="buscar-modulos">
                     <div class="header">
                          <div class="form-group">

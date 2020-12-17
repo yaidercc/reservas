@@ -42,7 +42,6 @@ if (!isset($_SESSION['cedula'])) {
                     <img id="logo-air" src="img/logo_airplan.png" height="100px" width="100px">
                </div>
                <div class="enlaces">
-
                     <a href="#">
                          <ion-icon name="calendar"></ion-icon><span>mis reservas</span>
                     </a>
@@ -54,7 +53,7 @@ if (!isset($_SESSION['cedula'])) {
      </header>
      <div class="form-container">
           <form action="#" id="form-reservar">
-               <h1>Reservar</h1>
+               <h1>reservar modulo</h1>
                <div class="container-inputs">
                     <div class="form-group">
                          <label class="col-lg-6 control-label"><span class="text-title">tus nombres</span><span class="text-danger"></span></label>
@@ -68,23 +67,23 @@ if (!isset($_SESSION['cedula'])) {
 
                     <div class="form group">
                          <label class="col-lg-6 control-label"><span class="text-title">fecha de reserva</span><span class="text-danger">*</span></label>
-                         <input type="date" name="fecha" value="09/12/2020" class="form-control">
+                         <input type="date" name="fecha" value="09/12/2020" class="fecha-fin form-control" readonly>
                     </div>
                     <div class="horarios">
 
                          <div class="form group">
                               <label class="control-label"><span class="text-title">hora inicio</span><span class="text-danger">*</span></label>
-                              <input type="time" name="Hinicio" value="8:55 am" class="horin horas form-control">
+                              <input type="time" name="Hinicio" value="8:55 am" class="horin horas form-control" readonly>
                          </div>
 
                          <div class="form group">
                               <label class="control-label"><span class="text-title">hora final</span><span class="text-danger">*</span></label>
-                              <input type="time" name="Hfinal" value="" class="hfinal horas form-control">
+                              <input type="time" name="Hfinal" value="" class="hfinal horas form-control" readonly>
                          </div>
                     </div>
                     <div class="modulo-grupo">
                          <input type="button" class="modulo-grp btn-primary" value="elejir modulo" id="elejir">
-                         <div class="input-modulo form group">
+                         <div class="form group">
                               <label class="col-lg-6 control-label"><span class="text-title">Modulo</span><span class="text-danger"></span></label>
                               <input type="text" id="modulo" name="modulo" class="modulo-grp form-control" readonly>
                          </div>
@@ -104,34 +103,33 @@ if (!isset($_SESSION['cedula'])) {
      <div id="overlay" class="overlay-modulos ">
           <div class="popup " id="popup">
                <a href="#" id="btn-cerrar-popup" class="btn-cerrar-popup"> <i class="fas fa-times"></i></a>
-               <form action="#" id="buscar-modulos">
+               <form action="#" name="send" id="buscar-modulos">
                     <div class="header">
                          <div class="form-group">
-                              <label class="col-lg-6 control-label"><span class="text-title">fecha de reserva</span><span class="text-danger">*</span></label>
+                              <label class=" control-label"><span class="text-title">fecha de reserva</span><span class="text-danger">*</span></label>
                               <input type="date" name="fecha" value="09/12/2020" class="fecha form-control" required>
                          </div>
                          <div class="form-group">
-                              <label class="hinicio col-lg-6 control-label"><span class="text-title">hora inicio</span><span class="text-danger">*</span></label>
-                              <input type="time" id="hora_in" name="Hinicio" class="horin form-control" required>
+                              <label class="hiniciocontrol-label"><span class="text-title">hora inicio</span><span class="text-danger">*</span></label>
+                              <input type="time" id="hora_in" name="Hinicio" class="hora Horin form-control" required>
                          </div>
 
                          <div class="form-group">
-                              <label class="col-lg-6 control-label"><span class="text-title">hora final</span><span class="text-danger">*</span></label>
-                              <input type="time" id="hora_fin" name="Hfinal" class="hfinal form-control" required>
+                              <label class=" control-label"><span class="text-title">hora final</span><span class="text-danger">*</span></label>
+                              <input type="time" id="hora_fin" name="Hfinal" class="Hfinal hora form-control" required>
                          </div>
                          <div class="form-group">
-                              <label class="col-lg-6 control-label"><span class="text-title">Modulo</span><span class="text-danger"></span></label>
+                              <label class=" control-label"><span class="text-title">Modulo</span><span class="text-danger"></span></label>
                               <input type="text" id="num_modulo" name="modulo" class="form-control">
+
                          </div>
-                         <a href="#" id="select-modulo">elejir</a>
-
-
-
+                         <a href="#" id="select-modulo">Buscar</a>
                     </div>
-                    <input type="submit" value="aceptar" id="aceptar" class="btn-primary" disabled>
                     <div class="container">
                          <!--CARGAN LOS MODULOS-->
                     </div>
+                    <input type="button" value="aceptar" id="aceptar" class="btn-primary" disabled>
+
                </form>
 
 

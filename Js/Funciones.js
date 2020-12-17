@@ -160,35 +160,52 @@ function buscar(modulo,hinicio,hfinal,fecha) {
 
 //poner valor del radio button en el input de modulo
 $("#elejir").on("click", function(){
-  console.log("dio");
-  $("#aceptar").prop("disabled", false);
-  $(".radio-modulo").on("click", function(){
-   
-    var valorRadio=$(this).val();
-    console.log("dio2");
+  
+  $('body').on('click', '.modulo input[type=radio]', function(){
+    var valorRadio=$(this).attr('value');
     $("#num_modulo").val(valorRadio);
-    jQuery(document).on("click","#aceptar",function(){
+   
+    $("#aceptar").prop("disabled", false);
+    jQuery(document).on("click","#aceptar",function(event){
+      console.log("algo");
+      $("#num_modulo").val(valorRadio);
+      /// GUARDA LOS VALORES DE LOS CAMPOSM ////
+      let fecha=$(".fecha").val();
+      let horainicio=$(".Horin").val();
+      let horafin=$(".Hfinal").val();
+      let numModulo=$("#num_modulo").val();
+      overlay.classList.remove("active");
+      popup.classList.remove("active");
+      console.log(fecha);
+      //// ASIGNAR VALORES ////
+      $(".fecha-fin").val(fecha)
+      $(".horin").val(horainicio)
+      $(".hfinal").val(horafin)
+      $("#modulo").prop("display", "block")
+      $("#modulo").val(numModulo)
+    })
+  })
+  })
+$(document).on("submit","#form-reservar",function(event){
+  event.preventDefault();
+  jQuery
+    .ajax({
+      url: "php/logout.php",
+      type: "POST",
+      dataType: "json",
+      data: $(this).serialize(),
+      beforeSend: function () {},
+    })
+    .done(function (resp) {
       Swal.fire({
-        title: "Adevertencia!",
-        text: "Estas seguro que deseas seleccionar este modulo?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Si, seleccionar",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          /*$("aceptar").prop("disabled", false);
-          var valorRadio=$(this).val();
-          $("#num_modulo").val(valorRadio);*/
-          console.log("hello")
-        } else {
-          $("input[type=radio]").prop("checked", false);
-          console.log("declined");
-        }
+        position: "top-end",
+        icon: "success",
+        title: "Tu pregunta fue eliminada! ",
+        showConfirmButton: false,
+        timer: 1500,
       });
     })
-      
-  })
-
+    .fail(function (resp) {
+      swal("Error", "error inesperado al realizar la consulta", "error");
+    });
 })

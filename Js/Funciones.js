@@ -146,7 +146,7 @@ function buscar(modulo,hinicio,hfinal,fecha) {
         hinicio:hinicio,
         hfinal:hfinal,
         fecha:fecha
-      },
+      }
       
     })
     .done(function (resp) {
@@ -190,7 +190,7 @@ $(document).on("submit","#form-reservar",function(event){
   event.preventDefault();
   jQuery
     .ajax({
-      url: "php/logout.php",
+      url: "php/reserva.php",
       type: "POST",
       dataType: "json",
       data: $(this).serialize(),
@@ -200,12 +200,16 @@ $(document).on("submit","#form-reservar",function(event){
       Swal.fire({
         position: "top-end",
         icon: "success",
-        title: "Tu pregunta fue eliminada! ",
+        title: "reserva exitosa ",
         showConfirmButton: false,
-        timer: 1500,
+        timer: 2000,
       });
+      setTimeout(reloads,2400);
     })
     .fail(function (resp) {
       swal("Error", "error inesperado al realizar la consulta", "error");
     });
 })
+function reloads(){
+  location.reload();
+}

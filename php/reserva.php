@@ -1,11 +1,13 @@
 <?php
      include "conexion.php";
+     session_start();
      $modulo=$_POST['modulo'];
      $fecha=$_POST['fecha'];
      $inicio=$_POST['Hinicio'];
      $final=$_POST['Hfinal'];
 
-     $Buscar_Modulos=mysqli_query($conexion,"SELECT * FROM reservas WHERE cod_modulo_fk=$modulo AND fecha_reserva='$fecha' ORDER BY hora_inicio ASC"); 
+     $reservar=mysqli_query($conexion,"INSERT INTO `reservas`(`cod_modulo_fk`, `cedula_fk`, `fecha_reserva`, `hora_inicio`, `hora_final`) VALUES ($modulo, $_SESSION[cedula],'$fecha','$inicio','$final')");
+    /*$Buscar_Modulos=mysqli_query($conexion,"SELECT * FROM reservas WHERE cod_modulo_fk=$modulo AND fecha_reserva='$fecha' ORDER BY hora_inicio ASC"); 
      
      $verificar=false;
     
@@ -24,11 +26,11 @@
                
           }
           
-     }
-     if($verificar){
-          echo json_encode($verificar);
+     }*/
+     if($reservar){
+          echo json_encode(array("validacion"=>true));
      }else{
-          echo json_encode($array);
+          echo "error";
      }
 
 

@@ -4,77 +4,121 @@
 include "conexion.php";
 
 $Buscar_Modulos = "";
-$sw = 0;
+////////////// VERIFICAR QUE CONSULTA SE EJECUTO ////////////////
+$consulta = 0;
+/////////////// SI SE ESPECIFICA UN MODULO, VERIFICA SI ESTA DISPONIBLE //////////
 $verificador = true;
+/////////////// EVITAR QUE UN MODULO SE RESERVE 2 VECES EN EL MISMO HORARIO /////////////
+$validarHorario = -1;
+/////////////// EVITAR QUE TRAIGA MODULOS REPETIDOS ////////////////
+$noRepetir = -1;
 /////////////// CONSULTA POR DEFECTO ///////////////////////////
+$verificar = "";
 
-
-
-///////////////// SI EL CAMPO MODULO ESTA DEFINIDO ////////////////////////
+///////////////// VERIFICA SI EL CAMPO MODULO ESTA VACIO ////////////////////////
 if (empty($_POST['modulo'])) {
-     $Buscar_Modulos = "SELECT * FROM reservas WHERE fecha_reserva='$_POST[fecha]'";
+     $Buscar_Modulos = "SELECT * FROM reservas WHERE fecha_reserva='$_POST[fecha]' ORDER BY cod_modulo_fk, hora_inicio asc ";
 } else {
      $Buscar_Modulos = "SELECT * FROM reservas WHERE fecha_reserva='$_POST[fecha]' AND cod_modulo_fk=$_POST[modulo] ORDER BY `hora_inicio` ASC";
-     $sw = 1;
+     $consulta = 1;
 }
 
-////////////////// EJECUTA LA CONSULTA //////////////////////
+//// EJECUTA LA CONSULTA
 $query = mysqli_query($conexion, $Buscar_Modulos);
 
-/////////////// VALIDA CANTIDAD DE DATOS TRAIDOS ///////////////
+/////////////// VALIDA CANTIDAD DE DATOS ENCONTRADOS ///////////////
 if (mysqli_num_rows($query) > 0) {
-     $verificar = "";
+     
      while ($row = mysqli_fetch_assoc($query)) {
-          ////////// VERIFICA QUE LOS CAMPOS HORA INICIO Y HORA FINAL TENGAN DATOS ////////////////
           /////////////////////// COMPARA LA HORA DEL FORMULARIO CON LA HORA DE LA BD ///////////////////
-          if ($_POST['hinicio'] < $row['hora_inicio'] && $_POST['hfinal'] < $row['hora_inicio'] || $_POST['hinicio'] > $row['hora_final'] && $verificador) {
-               if ($sw == 1) {
-                    if ($verificador) {
-                         $verificar = "<div class='modulo'>
+          if ($_POST['hinicio'] < $row['hora_inicio'] && $_POST['hfinal'] < $row['hora_inicio'] || $_POST['hinicio'] > $row['hora_final']) {
+               //// CONDICION QUE AYUDA A EVITAR QUE UN MODULO SE RESERVE 2 VECES
+               if ($validarHorario != $row['cod_modulo_fk']) {
+                    if ($consulta == 1) {
+                         if ($verificador) {
+                              $verificar = "<div class='modulo'>
+                                                  <div class='conjunto'>
+                                                       <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo_fk]' >
+                                                       <h1>Modulo $row[cod_modulo_fk]</h1>
+                                                  </div>
+                                                  <p><i class='fas fa-check-circle'></i><span>disponible</span></p>
+                                              </div>";
+                         } else {
+                              $verificar = "<div class='modulo no-disponible'>
                          <div class='conjunto'>
-                    <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo_fk]' >
-                    <h1>Modulo $row[cod_modulo_fk]</h1>
-                    </div>
+                         <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo_fk]' disabled>
+                         <h1>Modulo $row[cod_modulo_fk]</h1>
+                         </div>
+                         <p><i class='fas fa-check-circle'></i><span>no disponible</span></p>
+                    </div>";
+                         }
+                    } else {
+                         if ($noRepetir != $row['cod_modulo_fk']) {
+                              $verificar .= "<div class='modulo'>
+                                    <div class='conjunto'>
+                                        <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo_fk]' >
+                                        <h1>Modulo $row[cod_modulo_fk]</h1>
+                                   </div>
                          <p><i class='fas fa-check-circle'></i><span>disponible</span></p>
                     </div>";
+                         }
                     }
-               } else {
-                    $verificar .= "<div class='modulo'>
-                    <div class='conjunto'>
-                    <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo_fk]' >
-                    <h1>Modulo $row[cod_modulo_fk]</h1>
-                    </div>
-                         <p><i class='fas fa-check-circle'></i><span>disponible</span></p>
-                    </div>";
                }
           } else {
-               if ($sw == 1) {
+
+               if ($consulta == 1) {
                     $verificador = false;
                     $verificar = "<div class='modulo no-disponible'>
                     <div class='conjunto'>
-                    <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo_fk]' >
+                    <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo_fk]' disabled>
                     <h1>Modulo $row[cod_modulo_fk]</h1>
                     </div>
-                    <p><i class='fas fa-check-circle'></i><span>no disosiponible</span></p>
+                    <p><i class='fas fa-check-circle'></i><span>no disponible</span></p>
                </div>";
+               } else {
+                    $aux = $row['cod_modulo_fk'];
                }
           }
+          $noRepetir = $row['cod_modulo_fk'];
      }
 } else {
-     $Buscar_Modulos = mysqli_query($conexion, "SELECT * FROM modulos");
-     $verificar = "";
-     if($sw==1){
-          $Buscar_Modulos = mysqli_query($conexion, "SELECT * FROM modulos WHERE cod_modulo=$_POST[modulo]");
+     /// TRAER TODO LO DE LA BD MODULOS
+     $Buscar_Modulos = "SELECT * FROM modulos";
+     if ($consulta == 1) {
+          ///TRAE EL MODULO DE LA BD MODULOS
+          $Buscar_Modulos = "SELECT * FROM modulos WHERE cod_modulo=$_POST[modulo]";
      }
-     while ($row = mysqli_fetch_assoc($Buscar_Modulos)) {
+     //// EJECUTA LA CONSULTA
+     $query = mysqli_query($conexion, $Buscar_Modulos);
+     while ($row = mysqli_fetch_assoc($query)) {
           $verificar .= "<div class='modulo'>
-                              <input type='radio' name='modulo' class='radio-modulo disponible' value='$row[cod_modulo]' >
-                              <h1>Modulo $row[cod_modulo]</h1>
-                              <p><i class='fas fa-check-circle'></i><span>disponible</span></p>
-                         </div>";
+          <div class='conjunto'>
+               <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo]' >
+               <h1>Modulo $row[cod_modulo]</h1>
+          </div>
+          <p><i class='fas fa-check-circle'></i><span>disponible</span></p>
+          </div>";
      }
 }
+//echo $Buscar_Modulos;
 
-echo $verificar==""?"no hay modulos disponibles en este horario":$verificar;
+if ($verificar == "" && $consulta == 0) {
+     $buscar_noex = "SELECT * FROM modulos WHERE `cod_modulo` NOT IN (SELECT `cod_modulo_fk` FROM reservas)";
+     $query = mysqli_query($conexion, $buscar_noex);
+     if (mysqli_num_rows($query) > 0) {
+          while ($row = mysqli_fetch_assoc($query)) {
+               $verificar .= "<div class='modulo'>
+                                   <input type='radio' name='modulo' class='radio-modulo disponible' value='$row[cod_modulo]' >
+                                   <h1>Modulo $row[cod_modulo]</h1>
+                                   <p><i class='fas fa-check-circle'></i><span>disponible</span></p>
+                              </div>";
+          }
+     } else {
+          $verificar = "no hay modulos disponibles en este horario";
+     }
+}
+echo $verificar;
+
+
 
 ?>

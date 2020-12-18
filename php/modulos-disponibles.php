@@ -13,7 +13,7 @@ $validarHorario = -1;
 /////////////// EVITAR QUE TRAIGA MODULOS REPETIDOS ////////////////
 $noRepetir = -1;
 /////////////// CONSULTA POR DEFECTO ///////////////////////////
-$verificar = "";
+$EtiquetaModulos = "";
 
 ///////////////// VERIFICA SI EL CAMPO MODULO ESTA VACIO ////////////////////////
 if (empty($_POST['modulo'])) {
@@ -36,7 +36,7 @@ if (mysqli_num_rows($query) > 0) {
                if ($validarHorario != $row['cod_modulo_fk']) {
                     if ($consulta == 1) {
                          if ($verificador) {
-                              $verificar = "<div class='modulo'>
+                              $EtiquetaModulos = "<div class='modulo'>
                                                   <div class='conjunto'>
                                                        <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo_fk]' >
                                                        <h1>Modulo $row[cod_modulo_fk]</h1>
@@ -44,23 +44,23 @@ if (mysqli_num_rows($query) > 0) {
                                                   <p><i class='fas fa-check-circle'></i><span>disponible</span></p>
                                               </div>";
                          } else {
-                              $verificar = "<div class='modulo no-disponible'>
-                         <div class='conjunto'>
-                         <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo_fk]' disabled>
-                         <h1>Modulo $row[cod_modulo_fk]</h1>
-                         </div>
-                         <p><i class='fas fa-check-circle'></i><span>no disponible</span></p>
-                    </div>";
+                              $EtiquetaModulos = "<div class='modulo no-disponible'>
+                                                  <div class='conjunto'>
+                                                       <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo_fk]' disabled>
+                                                       <h1>Modulo $row[cod_modulo_fk]</h1>
+                                                  </div>
+                                                  <p><i class='fas fa-check-circle'></i><span>no disponible</span></p>
+                                             </div>";
                          }
                     } else {
                          if ($noRepetir != $row['cod_modulo_fk']) {
-                              $verificar .= "<div class='modulo'>
-                                    <div class='conjunto'>
-                                        <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo_fk]' >
-                                        <h1>Modulo $row[cod_modulo_fk]</h1>
-                                   </div>
-                         <p><i class='fas fa-check-circle'></i><span>disponible</span></p>
-                    </div>";
+                              $EtiquetaModulos .= "<div class='modulo'>
+                                                  <div class='conjunto'>
+                                                       <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo_fk]' >
+                                                       <h1>Modulo $row[cod_modulo_fk]</h1>
+                                                  </div>
+                                                  <p><i class='fas fa-check-circle'></i><span>disponible</span></p>
+                                             </div>";
                          }
                     }
                }
@@ -68,13 +68,13 @@ if (mysqli_num_rows($query) > 0) {
 
                if ($consulta == 1) {
                     $verificador = false;
-                    $verificar = "<div class='modulo no-disponible'>
-                    <div class='conjunto'>
-                    <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo_fk]' disabled>
-                    <h1>Modulo $row[cod_modulo_fk]</h1>
-                    </div>
-                    <p><i class='fas fa-check-circle'></i><span>no disponible</span></p>
-               </div>";
+                    $EtiquetaModulos = "<div class='modulo no-disponible'>
+                                        <div class='conjunto'>
+                                             <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo_fk]' disabled>
+                                             <h1>Modulo $row[cod_modulo_fk]</h1>
+                                        </div>
+                                        <p><i class='fas fa-check-circle'></i><span>no disponible</span></p>
+                                   </div>";
                } else {
                     $aux = $row['cod_modulo_fk'];
                }
@@ -91,33 +91,35 @@ if (mysqli_num_rows($query) > 0) {
      //// EJECUTA LA CONSULTA
      $query = mysqli_query($conexion, $Buscar_Modulos);
      while ($row = mysqli_fetch_assoc($query)) {
-          $verificar .= "<div class='modulo'>
-          <div class='conjunto'>
-               <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo]' >
-               <h1>Modulo $row[cod_modulo]</h1>
-          </div>
-          <p><i class='fas fa-check-circle'></i><span>disponible</span></p>
-          </div>";
+          $EtiquetaModulos .= "<div class='modulo'>
+                              <div class='conjunto'>
+                                   <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo]' >
+                                   <h1>Modulo $row[cod_modulo]</h1>
+                              </div>
+                              <p><i class='fas fa-check-circle'></i><span>disponible</span></p>
+                         </div>";
      }
 }
-//echo $Buscar_Modulos;
 
-if ($verificar == "" && $consulta == 0) {
+// EN CASO DE QUE EN LA BD RESERVAS NO HAYAN MODULOS DISPONIBLES, TRAE LOS MODULOS DE LA OTRA BD QUE NO ESTEN EN RESERVAS
+if ($EtiquetaModulos == "" && $consulta == 0) {
      $buscar_noex = "SELECT * FROM modulos WHERE `cod_modulo` NOT IN (SELECT `cod_modulo_fk` FROM reservas)";
      $query = mysqli_query($conexion, $buscar_noex);
      if (mysqli_num_rows($query) > 0) {
           while ($row = mysqli_fetch_assoc($query)) {
-               $verificar .= "<div class='modulo'>
+               $EtiquetaModulos .= "<div class='modulo'>
                                    <input type='radio' name='modulo' class='radio-modulo disponible' value='$row[cod_modulo]' >
                                    <h1>Modulo $row[cod_modulo]</h1>
                                    <p><i class='fas fa-check-circle'></i><span>disponible</span></p>
                               </div>";
           }
      } else {
-          $verificar = "no hay modulos disponibles en este horario";
+          $EtiquetaModulos = "no hay modulos disponibles en este horario";
      }
 }
-echo $verificar;
+
+/// IMPRIME EL CONTENDO
+echo $EtiquetaModulos;
 
 
 

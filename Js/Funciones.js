@@ -29,8 +29,12 @@ jQuery(document).on("submit", "#form-login", function (event) {
     .done(function (resp) {
       //resp, es la variable que recive los datos JSON del archivo php
       if (resp.respuesta) {
-        $("#mostrar").val("Ingresar"); //
+        $("#mostrar").val("Ingresar");
+        
         location.href = "Reservas.php"; //redirecciona a la pagina de reservas
+        if (resp.tipo == 1) {
+          $(".form-container").html();
+        }
       } else {
         //error si no encuentra ningun registro
         swal(
@@ -68,15 +72,6 @@ $("#salir").on("click", function (event) {
       swal("Error", "error inesperado al realizar la consulta", "error");
     });
 });
-/*
-var modulo_seleccionado = document.querySelectorAll(".modul");
-for (var i = 0; i < modulo_seleccionado; i++) {
-  $(modulo_seleccionado[i]).on("select", function(e){
-    e.preventDefault();
-    console.log(modulo_seleccionado.value());
-  })
-
-}*/
 
 //seleccionar un modulo y reflejarlo en un input
 $("input[type='radio']").on("change", this, function () {
@@ -109,45 +104,40 @@ $("input[type='radio']").on("change", this, function () {
 // al darle click a buscar modulo se va a desplegar esta funcion de jquery
 jQuery(document).on("click", "#select-modulo", function (event) {
   event.preventDefault();
-  var modulo=$("#num_modulo").val();
-  var hinicio=$("#hora_in").val();
-  var hfinal=$("#hora_fin").val();
-  var fecha=$(".fecha").val();
-  if(hinicio=="" || hfinal=="" || fecha==""){
-    if(hfinal==""){
+  var modulo = $("#num_modulo").val();
+  var hinicio = $("#hora_in").val();
+  var hfinal = $("#hora_fin").val();
+  var fecha = $(".fecha").val();
+  if (hinicio == "" || hfinal == "" || fecha == "") {
+    if (hfinal == "") {
       $("#hora_fin").addClass("is-invalid");
     }
-     if(hinicio==""){
+    if (hinicio == "") {
       $("#hora_in").addClass("is-invalid");
     }
-    if(fecha==""){
+    if (fecha == "") {
       $(".fecha").addClass("is-invalid");
     }
-  
-  }else{
+  } else {
     $("#hora_in").removeClass("is-invalid");
     $("#hora_fin").removeClass("is-invalid");
     $(".fecha").removeClass("is-invalid");
-    buscar(modulo,hinicio,hfinal,fecha);
+    buscar(modulo, hinicio, hfinal, fecha);
   }
-
-  
- 
 });
 //funcion para buscar los modulos
-function buscar(modulo,hinicio,hfinal,fecha) {
+function buscar(modulo, hinicio, hfinal, fecha) {
   jQuery
     .ajax({
       url: "php/modulos-disponibles.php",
       type: "POST",
       dataType: "html",
-      data:{
-        modulo:modulo,
-        hinicio:hinicio,
-        hfinal:hfinal,
-        fecha:fecha
-      }
-      
+      data: {
+        modulo: modulo,
+        hinicio: hinicio,
+        hfinal: hfinal,
+        fecha: fecha,
+      },
     })
     .done(function (resp) {
       $(".container").html(resp);
@@ -159,34 +149,33 @@ function buscar(modulo,hinicio,hfinal,fecha) {
 }
 
 //poner valor del radio button en el input de modulo
-$("#elejir").on("click", function(){
-  
-  $('body').on('click', '.modulo input[type=radio]', function(){
-    var valorRadio=$(this).attr('value');
+$("#elejir").on("click", function () {
+  $("body").on("click", ".modulo input[type=radio]", function () {
+    var valorRadio = $(this).attr("value");
     $("#num_modulo").val(valorRadio);
-   
+
     $("#aceptar").prop("disabled", false);
-    jQuery(document).on("click","#aceptar",function(event){
+    jQuery(document).on("click", "#aceptar", function (event) {
       console.log("algo");
       $("#num_modulo").val(valorRadio);
       /// GUARDA LOS VALORES DE LOS CAMPOSM ////
-      let fecha=$(".fecha").val();
-      let horainicio=$(".Horin").val();
-      let horafin=$(".Hfinal").val();
-      let numModulo=$("#num_modulo").val();
+      let fecha = $(".fecha").val();
+      let horainicio = $(".Horin").val();
+      let horafin = $(".Hfinal").val();
+      let numModulo = $("#num_modulo").val();
       overlay.classList.remove("active");
       popup.classList.remove("active");
       console.log(fecha);
       //// ASIGNAR VALORES ////
-      $(".fecha-fin").val(fecha)
-      $(".horin").val(horainicio)
-      $(".hfinal").val(horafin)
-      $("#modulo").prop("display", "block")
-      $("#modulo").val(numModulo)
-    })
-  })
-  })
-$(document).on("submit","#form-reservar",function(event){
+      $(".fecha-fin").val(fecha);
+      $(".horin").val(horainicio);
+      $(".hfinal").val(horafin);
+      $("#modulo").prop("display", "block");
+      $("#modulo").val(numModulo);
+    });
+  });
+});
+$(document).on("submit", "#form-reservar", function (event) {
   event.preventDefault();
   jQuery
     .ajax({
@@ -204,12 +193,12 @@ $(document).on("submit","#form-reservar",function(event){
         showConfirmButton: false,
         timer: 2000,
       });
-      setTimeout(reloads,2400);
+      setTimeout(reloads, 2400);
     })
     .fail(function (resp) {
       swal("Error", "error inesperado al realizar la consulta", "error");
     });
-})
-function reloads(){
+});
+function reloads() {
   location.reload();
 }

@@ -14,9 +14,12 @@
                $_SESSION['segundo_nombre'] = $datos['segundo_nombre'];
                $_SESSION['primer_apellido'] = $datos['primer_apellido'];
                $_SESSION['segundo_apellido'] = $datos['segundo_apellido'];
-               
+               $_SESSION['tipo_usuario']=$datos['cod_tipo_fk'];
                if($datos>0){
-                    echo json_encode(array('respuesta' =>true ,'nombre' =>$datos['primer_nombre']));
+                    if($datos['cod_tipo_fk']==1){
+                         $enlace="<a href='#'>hola</a>";
+                    }
+                    echo json_encode(array('respuesta' =>true ,'nombre' =>$datos['primer_nombre'],'tipo'=>$datos['cod_tipo_fk']));
                     $_SESSION['cedula']=$cedula;
                }else{
                     echo json_encode(array('respuesta' =>false));//manda datos al archivo

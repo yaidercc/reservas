@@ -44,11 +44,19 @@ if (!isset($_SESSION['cedula'])) {
                </div>
                <div class="enlaces">
                     <a href="#">
-                         <ion-icon name="calendar"></ion-icon><span>mis reservas</span>
+                         <ion-icon name="calendar"></ion-icon><span> mis reservas</span>
                     </a>
-                    <a href="php/logout.php" id="salir">
-                         <ion-icon name="power"></ion-icon><span>salir</span>
+                    <?php
+                         if($_SESSION['tipo_usuario']==1){
+                              echo "<a href='reportes.php'>
+                              <ion-icon name='receipt'></ion-icon><span>repotes</span>
+                         </a>";
+                         }
+                    ?>
+                    <a href="php/logout.php">
+                         <ion-icon name="power"></ion-icon><span> salir</span>
                     </a>
+                    
                </div>
           </nav>
      </header>

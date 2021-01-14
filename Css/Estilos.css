@@ -10,13 +10,7 @@ body {
 /*git remote add origin https://github.com/yaidercc/reservas_full.git*/
 /*//////////////////////////// Estilos del login ///////////////////////////////////*/
 
-#form-login .btn-login {
-  width: 150px;
-  height: 30px;
-  margin: 10px auto;
-  border: none;
-  text-align: center;
-}
+
 .navegacion-login #logo-air {
   width: 120px;
   height: 100px;

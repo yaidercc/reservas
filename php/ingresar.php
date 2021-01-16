@@ -7,7 +7,7 @@
      $ingresar = mysqli_query($conexion, "SELECT * FROM `empleados` WHERE cedula=$cedula");
      $datos = $ingresar->fetch_assoc();
      $_SESSION['activo'] = true;
-     $_SESSION['id'] = $datos['id'];
+     $_SESSION['Id'] = $datos['Id'];
      $_SESSION['cedula'] = $datos['cedula'];
      $_SESSION['Nombres'] = $datos['Nombres'];
      $_SESSION['Apellios'] = $datos['Apellidos'];

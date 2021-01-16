@@ -118,7 +118,7 @@ if (!isset($_REQUEST["opc"])) {
                 //operacion para ver hasta que numero de los registros de la bd, debe traer
                 $total = ceil($total_registros / $por_pagina);
                 //consultar los registros que tengan que ver con la consulta
-                $consultar = mysqli_query($conexion, "SELECT * FROM `empleados` ORDER BY Nombres ASC ");
+                $consultar = mysqli_query($conexion, "SELECT * FROM `empleados` e right join `cargos` c ON c.ID=e.id_cargo_fk ORDER BY Nombres ASC ");
                 //verifica el numero de tuplas que se hayan encontrado
                 $cantidades = mysqli_num_rows($consultar);
                 if ($cantidades > 0) { ?>
@@ -126,11 +126,11 @@ if (!isset($_REQUEST["opc"])) {
                     while ($row = mysqli_fetch_array($consultar)) {
                     ?>
                         <tr>
-                            <td><?php echo $row['id'] ?></td>
+                            <td><?php echo $row['Id'] ?></td>
                             <td><?php echo $row['cedula'] ?></td>
                             <td><?php echo $row['Nombres'] ?></td>
                             <td><?php echo $row['Apellidos'] ?></td>
-                            <td><?php echo $row['cargo'] ?></td>
+                            <td><?php echo $row['NOMBRE_CARGO'] ?></td>
                             <td>
                                 <a href="#" class="editar">
                                     <ion-icon name="pencil"></ion-icon>
@@ -167,7 +167,7 @@ if (!isset($_REQUEST["opc"])) {
         <div class="popup gestion-user" id="popup-user">
             <a href="#" id="btn-cerrar-popup" class="btn-cerrar-popup"> <i class="fas fa-times"></i></a>
             <h1 class="titulo">registrar usuario</h1>
-            <form action="#" id="adds-user-form">
+            <form action="php/gestionar_usuarios.php?case=agregar" method="POST"  id="ads-user-form">
 
                 <div class="form-group">
                     <label class=" control-label"><span class="text-title">ingrese el numero de documento</span><span class="text-danger">*</span></label>
@@ -184,19 +184,29 @@ if (!isset($_REQUEST["opc"])) {
                 </div>
                 <div class="form-group">
                     <label class=" control-label"><span class="text-title">ingrese el cargo</span><span class="text-danger">*</span></label>
-                    <input type="text" name="cargo" value="" class="cargo form-control">
+                    <select class="cargos selectpicker" name="cargo" aria-label=".form-select-sm example">
+                        <?php
+                        $cargos = mysqli_query($conexion, "SELECT * FROM cargos");
+                        while ($fila = mysqli_fetch_assoc($cargos)) { ?>
+                            <option value="<?php echo $fila['ID'] ?>"><?php echo $fila['NOMBRE_CARGO'] ?></option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+                    <!--<input type="text" name="cargo" value="" class="cargo form-control">-->
                 </div>
                 <input type="submit" value="aceptar" class="aceptar btn-primary">
             </form>
         </div>
     </div>
     </div>
+
     <!--MODIFICAR USUARIO-->
     <div id="overlay-upd" class="overlay ">
         <div class="popup gestion-user" id="popup-upd">
             <a href="#" id="btn-cerrar-popup-updt" class="btn-cerrar-popup"> <i class="fas fa-times"></i></a>
             <h1 class="titulo">modificar usuario</h1>
-            <form action="#" id="updt-user-form">
+            <form action="#" id="upd t-user-form">
                 <div class="form-group">
                     <label class=" control-label"><span class="text-title">numero de documento</span><span class="text-danger">*</span></label>
                     <input type="number" name="cedula" class="cedula-upd form-control" required>

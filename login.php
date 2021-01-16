@@ -49,7 +49,7 @@
      <!--contenedor general de la pagina-->
      <div class="container-login">
           <!--formulario login-->
-          <form action="#"  id="form-login">
+          <form action="#" id="form-login">
                <h1>iniciar sesión</h1>
                <div class="form-group">
                     <label class="control-label"><span class="text-title">ingrese su documento</span><span></label>

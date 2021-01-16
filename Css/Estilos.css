@@ -9,8 +9,21 @@ body {
 }
 /*git remote add origin https://github.com/yaidercc/reservas_full.git*/
 /*//////////////////////////// Estilos del login ///////////////////////////////////*/
-
-
+#form-login {
+  width: 400px;
+  height: 300px;
+  margin: auto;
+  margin-top: 110px;
+  box-shadow: -1px 3px 10px 0px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+#form-login .btn-login {
+  width: 150px;
+  height: 30px;
+  margin: 10px auto;
+  border: none;
+  text-align: center;
+}
 .navegacion-login #logo-air {
   width: 120px;
   height: 100px;
@@ -356,23 +369,7 @@ header .navegacion-reservas {
   opacity:0;
 
 }
-.exportar{
-  margin-right:20px;
-}
 
-.exportar.pdf{
-  background-color:red; 
-}
-.exportar.pdf:hover{
-  background-color:#f33636; 
-}
-.exportar.excel{
-  background-color:green; 
-  border:none;
-}
-.exportar.excel:hover{
-  background-color:rgb(65 185 65)
-}
 .popup .btn-cerrar-popup {
   font-size: 16px;
   line-height: 16px;
@@ -407,6 +404,12 @@ header .navegacion-reservas {
   opacity: 1;
   transform: scale(1);
 }
+.cargos{
+  width:100%;
+  height:35px;
+  outline:none;
+}
+
 
 /*/////////////////////////// RESPONSIVE DESIGN ////////////////////////////////*/
 

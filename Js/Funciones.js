@@ -80,7 +80,84 @@ if (abrirpopup_img && btncerrar_img) {
   });
 }
 
-console.log(abrirpopup_img);
+// ===================== FUNCIONES DATATABLES =================
+
+// CAMBIAR LENGUAGE DE LA TABLA A ESPAÑOL
+var language = {
+  language: {
+    decimal: "",
+    emptyTable: "No hay información",
+    info: "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+    infoEmpty: "Mostrando 0 to 0 of 0 Entradas",
+    infoFiltered: "(Filtrado de _MAX_ total entradas)",
+    infoPostFix: "",
+    thousands: ",",
+    lengthMenu: "Mostrar _MENU_ Entradas",
+    loadingRecords: "Cargando...",
+    processing: "Procesando...",
+    search: "Buscar:",
+    zeroRecords: "Sin resultados encontrados",
+    paginate: {
+      first: "Primero",
+      last: "Ultimo",
+      next: "Siguiente",
+      previous: "Anterior",
+    },
+  },
+};
+
+// FUNCIONES A LA TABLA DE RESERVACIONES
+if (document.getElementById("reservaciones")) {
+  $(document).ready(function () {
+    // INICIALIZAR DATATABLE Y ASIGNAR BOTONES DE PDF, EXCEL PARA REPORTES
+    $("#reservaciones").DataTable({
+      language: {
+        decimal: "",
+        emptyTable: "No hay información",
+        info: "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        infoEmpty: "Mostrando 0 to 0 of 0 Entradas",
+        infoFiltered: "(Filtrado de _MAX_ total entradas)",
+        infoPostFix: "",
+        thousands: ",",
+        lengthMenu: "Mostrar _MENU_ Entradas",
+        loadingRecords: "Cargando...",
+        processing: "Procesando...",
+        search: "Buscar:",
+        zeroRecords: "Sin resultados encontrados",
+        paginate: {
+          first: "Primero",
+          last: "Ultimo",
+          next: "Siguiente",
+          previous: "Anterior",
+        },
+      },
+      dom: "Bfrtip",
+      buttons: [
+        {
+          extend: "excelHtml5",
+          text:
+            '<span><i class="fas fa-file-pdf"></i>  <span>EXCEL</span></span>',
+          titleAttr: "Exportar a excel",
+          className: "exportar excel",
+        },
+        {
+          extend: "pdfHtml5",
+          text:
+            '<span><i class="fas fa-file-pdf"></i>  <span>PDF</span></span>',
+          titleAttr: "Exportar a excel",
+          className: "exportar pdf",
+        },
+      ],
+    });
+  });
+}
+
+/// FUNCIONES PARA LA TABLA DE USUARIOS
+if (document.getElementById("usuarios")) {
+  $(document).ready(function () {
+    $("#usuarios").DataTable(language);
+  });
+}
 
 //============= FUNCIONES PAGINA LOGIN ==========//
 
@@ -523,84 +600,5 @@ function AlertarEliminar(code) {
       Eliminarusuario(code);
       console.log(code);
     }
-  });
-}
-
-// ===================== FUNCIONES DATATABLES =================
-
-// CAMBIAR LENGUAGE DE LA TABLA A ESPAÑOL
-var language = {
-  language: {
-    decimal: "",
-    emptyTable: "No hay información",
-    info: "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-    infoEmpty: "Mostrando 0 to 0 of 0 Entradas",
-    infoFiltered: "(Filtrado de _MAX_ total entradas)",
-    infoPostFix: "",
-    thousands: ",",
-    lengthMenu: "Mostrar _MENU_ Entradas",
-    loadingRecords: "Cargando...",
-    processing: "Procesando...",
-    search: "Buscar:",
-    zeroRecords: "Sin resultados encontrados",
-    paginate: {
-      first: "Primero",
-      last: "Ultimo",
-      next: "Siguiente",
-      previous: "Anterior",
-    },
-  },
-};
-
-// FUNCIONES A LA TABLA DE RESERVACIONES
-if (document.getElementById("reservaciones")) {
-  $(document).ready(function () {
-    // INICIALIZAR DATATABLE Y ASIGNAR BOTONES DE PDF, EXCEL PARA REPORTES
-    $("#reservaciones").DataTable({
-      language: {
-        decimal: "",
-        emptyTable: "No hay información",
-        info: "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-        infoEmpty: "Mostrando 0 to 0 of 0 Entradas",
-        infoFiltered: "(Filtrado de _MAX_ total entradas)",
-        infoPostFix: "",
-        thousands: ",",
-        lengthMenu: "Mostrar _MENU_ Entradas",
-        loadingRecords: "Cargando...",
-        processing: "Procesando...",
-        search: "Buscar:",
-        zeroRecords: "Sin resultados encontrados",
-        paginate: {
-          first: "Primero",
-          last: "Ultimo",
-          next: "Siguiente",
-          previous: "Anterior",
-        },
-      },
-      dom: "Bfrtip",
-      buttons: [
-        {
-          extend: "excelHtml5",
-          text:
-            '<span><i class="fas fa-file-pdf"></i>  <span>EXCEL</span></span>',
-          titleAttr: "Exportar a excel",
-          className: "exportar excel",
-        },
-        {
-          extend: "pdfHtml5",
-          text:
-            '<span><i class="fas fa-file-pdf"></i>  <span>PDF</span></span>',
-          titleAttr: "Exportar a excel",
-          className: "exportar pdf",
-        },
-      ],
-    });
-  });
-}
-
-/// FUNCIONES PARA LA TABLA DE USUARIOS
-if (document.getElementById("usuarios")) {
-  $(document).ready(function () {
-    $("#usuarios").DataTable(language);
   });
 }

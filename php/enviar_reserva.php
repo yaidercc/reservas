@@ -6,7 +6,7 @@
      $inicio=$_POST['Hinicio'];
      $final=$_POST['Hfinal'];
 
-     $reservar=mysqli_query($conexion,"INSERT INTO `reservas`(`cod_modulo_fk`, `id_fk`, `fecha_reserva`, `hora_inicio`, `hora_final`) VALUES ($modulo, $_SESSION[id] ,'$fecha','$inicio','$final')");
+     $reservar=mysqli_query($conexion,"INSERT INTO `reservas`(`cod_modulo_fk`, `id_fk`, `fecha_reserva`, `hora_inicio`, `hora_final`) VALUES ($modulo, $_SESSION[Id] ,'$fecha','$inicio','$final')");
      if($reservar){
           echo json_encode(array("validacion"=>true));
      }else{

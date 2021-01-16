@@ -2,11 +2,11 @@
 include "conexion.php";
 switch ($_GET['case']) {
     case 'agregar':
-        $Registrar_usuario = mysqli_query($conexion, "CALL agregar_usuario($_POST[cedula],upper('$_POST[nombres]'),upper('$_POST[apellidos]'),upper('$_POST[cargo]'))");
+        $Registrar_usuario = mysqli_query($conexion, "CALL agregar_usuario($_POST[cedula],upper('$_POST[nombres]'),upper('$_POST[apellidos]'),$_POST[cargo])");
         if ($Registrar_usuario) {
-            echo json_encode(array("validacion" => true));
+            echo json_encode(array("validacion" => true,"cedul"=>$_POST['cedula'],"CALL agregar_usuario($_POST[cedula],upper('$_POST[nombres]'),upper('$_POST[apellidos]'),upper('$_POST[cargo]'))"));
         } else {
-            echo json_encode(array("validacion" => false));
+            echo json_encode(array("validacion" => false,"CALL agregar_usuario($_POST[cedula],upper('$_POST[nombres]'),upper('$_POST[apellidos]'),upper('$_POST[cargo]'))"));
         }
         break;
     case 'eliminar':

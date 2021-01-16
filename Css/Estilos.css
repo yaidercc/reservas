@@ -370,6 +370,23 @@ header .navegacion-reservas {
 
 }
 
+.exportar{
+  margin-right:20px;
+}
+
+.exportar.pdf{
+  background-color:red; 
+}
+.exportar.pdf:hover{
+  background-color:#f33636; 
+}
+.exportar.excel{
+  background-color:green; 
+  border:none;
+}
+.exportar.excel:hover{
+  background-color:rgb(65 185 65)
+}
 .popup .btn-cerrar-popup {
   font-size: 16px;
   line-height: 16px;

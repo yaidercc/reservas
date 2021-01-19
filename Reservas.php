@@ -17,7 +17,7 @@ if (!isset($_SESSION['cedula'])) {
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
      <!-- Libreria jquery -->
-     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+     <script src="librerias/jquery-3.5.1.slim.min.js"></script>
 
      <!-- Librerias boostrap -->
      <script src="librerias/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
@@ -69,11 +69,12 @@ if (!isset($_SESSION['cedula'])) {
                </div>
           </nav>
      </header>
-     <!--FORMULARIO DE RESERVAS-->
+     
+     <!--boton de vista de oficinas-->
      <div class="container-imagen">
           <a href="#" class="mapa-modulos" id="abrir-mapa">ver mapa de oficinas</a>
      </div>
-
+     <!--FORMULARIO DE RESERVAS-->
      <div class="form-container">
           <form action="#" id="form-reservar">
                <h1>Registrar usuario</h1>
@@ -122,7 +123,7 @@ if (!isset($_SESSION['cedula'])) {
 
           </form>
      </div>
-     <!--POP-UP PARA BUSCAR LOS MODULOS-->
+     <!--popup para ver el mapa de oficinas-->
      <div id="overlay-img" class="overlay modulos ">
           <div class="popup imagenes" id="popup-img">
                <a href="#" id="btn-cerrar-popup-img" class="btn-cerrar-popup"> <i class="fas fa-times"></i></a>
@@ -133,6 +134,8 @@ if (!isset($_SESSION['cedula'])) {
 
           </div>
      </div>
+
+     <!--popup mostrar modulos-->
      <div id="overlay" class="overlay modulos ">
           <div class="popup " id="popup">
                <a href="#" id="btn-cerrar-popup" class="btn-cerrar-popup"> <i class="fas fa-times"></i></a>
@@ -170,17 +173,15 @@ if (!isset($_SESSION['cedula'])) {
 
           </div>-->
 
-                    </div>
-                    <!--libreria jquery-->
-                    <script src="js/jquery-v1.min.js"></script>
-                    <!--libreria ajax-->
-                    <script src="librerias/jquery.min.js"></script>
-                    <!--libreria sweeetalert2-->
-                    <script src="librerias/sweetalert2.all.min.js"></script>
-                    <!--libreria sweeetalert-->
-                    <script src="librerias/sweetalert.min.js"></script>
-                    <!--funciones javascript-->
-                    <script src="js/Funciones.js"></script>
+     </div>
+     <!--libreria jquery-->
+     <script src="js/jquery-v1.min.js"></script>
+     <!--libreria ajax-->
+     <script src="librerias/sweetalert2.all.min.js"></script>
+     <!--libreria sweeetalert-->
+     <script src="librerias/sweetalert.min.js"></script>
+     <!--funciones javascript-->
+     <script src="js/Funciones.js"></script>
 </body>
 
 </html>

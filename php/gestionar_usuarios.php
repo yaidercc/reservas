@@ -10,12 +10,8 @@ switch ($_GET['case']) {
         }
         break;
     case 'eliminar':
-        $eliminar_usuarrio = mysqli_query($conexion, "CALL eliminar_usuario($_GET[id])");
-        if ($eliminar_usuarrio) {
-            echo json_encode(array("validacion" => true));
-        } else {
-            echo json_encode(array("validacion" => false));
-        }
+        $eliminar_usuario = mysqli_query($conexion, "CALL eliminar_usuario($_GET[id])");
+        
         break;
 
     case 'modificar':
@@ -27,5 +23,5 @@ switch ($_GET['case']) {
         }
         break;
     default:
-        #code...
+        echo '';
 }

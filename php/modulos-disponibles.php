@@ -28,7 +28,7 @@ if (empty($_POST['modulo'])) {
 $Buscar_reservas = mysqli_query($conexion, "SELECT * FROM reservas WHERE fecha_reserva='$_POST[fecha]' ORDER BY cod_modulo_fk, hora_inicio asc ");
 if (mysqli_num_rows($Buscar_reservas) > 0) {
      while ($row = mysqli_fetch_assoc($Buscar_reservas)) {
-          if ($_SESSION['id'] == $row['id_fk']) {
+          if ($_SESSION['Id'] == $row['id_fk']) {
                $reservasxDia = false;
           }
      }
@@ -45,12 +45,11 @@ if ($reservasxDia) {
           // en este vector se almacenan los datos que no coinciden con el horario indicado
           $valores = [mysqli_num_rows($query)];
           while ($row = mysqli_fetch_assoc($query)) {
-               ////// verifica si hay una reservacion este mismo dia
                /////////////////////// COMPARA LA HORA DEL FORMULARIO CON LA HORA DE LA BD ///////////////////
                if ($_POST['hinicio'] < $row['hora_inicio'] && $_POST['hfinal'] < $row['hora_inicio'] || $_POST['hinicio'] > $row['hora_final']) {
-                    //// CONDICION QUE AYUDA A EVITAR QUE UN MODULO SE RESERVE 2 VECES
+                    //// CONDICION QUE AYUDA A EVITAR QUE UN MODULO SE RESERVE 2 VECES EL MISMO DIA Y Y QUE LOS RANGOS DE HORA INTERSEDAN ENTRE SI
                     if ($validarHorario != $row['cod_modulo_fk']) {
-                         //si especifico un modulo, entra aqui
+                         //SI ESPECIFICO UN MODULO
                          if ($consulta == 1) {
                               if ($verificador) {
                                    $EtiquetaModulos = "<div class='modulo'>
@@ -61,10 +60,11 @@ if ($reservasxDia) {
                                                        <span  class='disponibilidad'><i class='fas fa-check-circle'></i><span>disponible</span></span>
                                                   /</div>";
                               } else {
+                                   //EN CASO DE QUE ESTE MODULO TENGA UNA CITA YA RESERVADA SE ALMACENAN EN ESTA VARIABLE
                                    $citas .= "de: $row[hora_inicio] a :$row[hora_final] \n";
                               }
                          } else {
-                              //si no especifico un modulo, entra aqui, y verifiqua que el modulo
+                              //SI NO ESPECIFICO UN MODULO EJECUTA ESTE CONDICIONAL Y VERIFICA QUE EL MODULO NO SE HA REPETIDO
                               if ($noRepetir != $row['cod_modulo_fk']) {
                                    $EtiquetaModulos .= "<div class='modulo'>
                                                        <div class='conjunto'>
@@ -79,7 +79,7 @@ if ($reservasxDia) {
                } else {
                     if ($consulta == 1) {
                          $verificador = false;
-                         //almacena el modulo con la clase no disponible
+                         //SE EJECUTA ESTE CONDICIONAL SI SE ESPECIFICO UN MODULO Y NO ESTA DISPONIBLE EN EL HORARIO ESTABLECIDO
                          $EtiquetaModulos = "<div class='modulo no-disponible'>
                                              <div class='conjunto'>
                                                   <input type='radio' name='modulo' class='radio-modulo ' value='$row[cod_modulo_fk]' disabled>
@@ -89,12 +89,10 @@ if ($reservasxDia) {
                                              span></span>
                                              <a href='#' class='citas'>mostrar citas</a>
                                         </div>";
-                         //si fue el mismo usuario quien reservo el modulo y por eso esta ocupado entonces se le muestra que lo reservo el, si no aparece simplemene que fue reservado
-                         if ($_SESSION['id'] == $row['id_fk']) {
-                              $citas .= "lo reservaste de: $row[hora_inicio] a: $row[hora_final] \n";
-                         } else {
+                         // SI YA FUE RESERVADO MUESTRA UNA ALERTA CON LOS HORIARIOS EN LOS QUE FUE RESERVADO
+                         if ($_SESSION['Id'] != $row['id_fk']) {
                               $citas .= "fue reservado de: $row[hora_inicio] a: $row[hora_final] \n";
-                         }
+                         } 
                     } else {
                          $aux = $row['cod_modulo_fk'];
                     }

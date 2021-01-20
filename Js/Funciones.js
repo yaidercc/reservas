@@ -422,7 +422,7 @@ jQuery(document).on("submit", "#adds-user-form", function (event) {
         });
         setTimeout(reloads, 2400);
       } else {
-        swal("incorrecto", "este usuario ya se encuentra registrado", "error");
+        swal("incorrecto", "el numero de documento ya se encuentra registrado", "error");
       }
       console.log("y a ver");
     })
@@ -523,7 +523,6 @@ $(document).on("click", ".editar", function () {
   var nombres = fila.find("td:eq(2)").text();
   var apellidos = fila.find("td:eq(3)").text();
   var cargo = fila.find("td:eq(4)").text();
-  console.log(cargo);
 
   //ABRIR VENTANA DE EDICION
   overlay_upd.classList.add("active");
@@ -536,7 +535,25 @@ $(document).on("click", ".editar", function () {
   $(".apellidos-upd").val(apellidos);
   $(".cargo-upd").val(cargo);
   $(".nombre-upd_val").val(nombres);
-
+  //EVENTO PARA TRAER DATOS AL SELECT
+  jQuery
+      .ajax({
+        url: "php/gestionar_usuarios.php?case=cargos&id="+id,
+        type: "POST",
+        dataType: "json",
+        data: $(this).serialize(),
+        beforeSend: function () {},
+      })
+      .done(function (resp) {
+        if (resp.validacion) {
+          $('#select-cargo').html(resp.select);
+          
+        } 
+        
+      })
+      .fail(function (resp) {
+        alert("nodio")
+      });
   //EVENTO SUBMIT DEL FORMULARIO DE ACTUALIZAR
   $(document).on("submit", "#updt-user-form", function (e) {
     e.preventDefault();

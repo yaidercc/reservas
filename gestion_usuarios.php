@@ -7,10 +7,7 @@ if (!isset($_SESSION['cedula'])) {
     header('Location: login.php');
     exit();
 }
-if (!isset($_REQUEST["opc"])) {
-    header("location: gestion_usuarios.php?opc=10");
-    exit();
-}
+
 ?>
 
 <!doctype html>
@@ -21,14 +18,28 @@ if (!isset($_REQUEST["opc"])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<!-- Librerias de fuentes-->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,500;0,700;0,900;1,100;1,500;1,700;1,900&display=swap" rel="stylesheet"> 
+     
+   
+     <!-- Libreria jquery -->
+     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+       <!-- Lubreria Boostrap 4 -->
+       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
-    <!-- Bootstrap CSS -->
-    <script src="librerias/jquery-3.5.1.slim.min.js"></script>
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-    <script src="https://kit.fontawesome.com/2efdabf6ca.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="Css/normalice.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="Css/Estilos.css" crossorigin="anonymous">
-    <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+     <!-- Libreria fontawesome-->
+     <script src="https://kit.fontawesome.com/2efdabf6ca.js" crossorigin="anonymous"></script>
+
+     <!--resetear estilos predeterminados-->
+     <link rel="stylesheet" href="Css/normalice.css" crossorigin="anonymous">
+
+     <!--estilos-->
+     <link rel="stylesheet" href="Css/Estilos.css" crossorigin="anonymous">
+
+     <!--libreria de iconos-->
+     <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
     <title>Listado Usuarios</title>
 </head>
 
@@ -98,7 +109,7 @@ if (!isset($_REQUEST["opc"])) {
             <tbody>
                 <?php
                 // cuenta la cantidad de tuplas que tienen relacion con la consulta
-                $cantidades = mysqli_query($conexion, "SELECT COUNT(*) as cantidad FROM `empleados`");
+                /*$cantidades = mysqli_query($conexion, "SELECT COUNT(*) as cantidad FROM `empleados`");
                 //covierte en un array los datos que trajo de la bd
                 $resultados = mysqli_fetch_array($cantidades);
                 // mete la cantidad registros en una variable
@@ -117,14 +128,13 @@ if (!isset($_REQUEST["opc"])) {
                 $desde = ($pagina - 1) * $por_pagina;
                 //operacion para ver hasta que numero de los registros de la bd, debe traer
                 $total = ceil($total_registros / $por_pagina);
-                //consultar los registros que tengan que ver con la consulta
+                //consultar los registros que tengan que ver con la consulta*/
                 $consultar = mysqli_query($conexion, "SELECT * FROM `empleados` e right join `cargos` c ON c.ID=e.id_cargo_fk ORDER BY Nombres ASC ");
                 //verifica el numero de tuplas que se hayan encontrado
                 $cantidades = mysqli_num_rows($consultar);
                 if ($cantidades > 0) { ?>
                     <?php
-                    while ($row = mysqli_fetch_array($consultar)) {
-                    ?>
+                    while ($row = mysqli_fetch_array($consultar)) { ?>
                         <tr>
                             <td><?php echo $row['Id'] ?></td>
                             <td><?php echo $row['cedula'] ?></td>
@@ -139,7 +149,7 @@ if (!isset($_REQUEST["opc"])) {
                             <td>
                                 <?php if ($row['cod_tipo_fk'] != 1) { ?>
                                     <a href="#" class="eliminar">
-                                        <ion-icon name="trash" onclick="AlertarEliminar(<?php echo $row['id'] ?>)"></ion-icon>
+                                        <ion-icon name="trash" onclick="AlertarEliminar(<?php echo $row['Id'] ?>)"></ion-icon>
                                     </a>
                                 <?php
                                 }
@@ -155,19 +165,15 @@ if (!isset($_REQUEST["opc"])) {
             </tbody>
         </table>
 
-
-
-
-
-
     </div>
 
 
+    <!--POPUP REGISTRO DE USUARIO-->
     <div id="overlay-user" class="overlay ">
         <div class="popup gestion-user" id="popup-user">
             <a href="#" id="btn-cerrar-popup" class="btn-cerrar-popup"> <i class="fas fa-times"></i></a>
             <h1 class="titulo">registrar usuario</h1>
-            <form action="php/gestionar_usuarios.php?case=agregar" method="POST"  id="ads-user-form">
+            <form action="#" id="adds-user-form">
 
                 <div class="form-group">
                     <label class=" control-label"><span class="text-title">ingrese el numero de documento</span><span class="text-danger">*</span></label>
@@ -186,7 +192,7 @@ if (!isset($_REQUEST["opc"])) {
                     <label class=" control-label"><span class="text-title">ingrese el cargo</span><span class="text-danger">*</span></label>
                     <select class="cargos selectpicker" name="cargo" aria-label=".form-select-sm example">
                         <?php
-                        $cargos = mysqli_query($conexion, "SELECT * FROM cargos");
+                        $cargos = mysqli_query($conexion, "SELECT * FROM cargos ORDER BY NOMBRE_CARGO ASC");
                         while ($fila = mysqli_fetch_assoc($cargos)) { ?>
                             <option value="<?php echo $fila['ID'] ?>"><?php echo $fila['NOMBRE_CARGO'] ?></option>
                         <?php
@@ -201,12 +207,12 @@ if (!isset($_REQUEST["opc"])) {
     </div>
     </div>
 
-    <!--MODIFICAR USUARIO-->
+    <!--POPUP MODIFICAR USUARIO-->
     <div id="overlay-upd" class="overlay ">
         <div class="popup gestion-user" id="popup-upd">
             <a href="#" id="btn-cerrar-popup-updt" class="btn-cerrar-popup"> <i class="fas fa-times"></i></a>
             <h1 class="titulo">modificar usuario</h1>
-            <form action="#" id="upd t-user-form">
+            <form action="#" id="updt-user-form">
                 <div class="form-group">
                     <label class=" control-label"><span class="text-title">numero de documento</span><span class="text-danger">*</span></label>
                     <input type="number" name="cedula" class="cedula-upd form-control" required>
@@ -221,9 +227,10 @@ if (!isset($_REQUEST["opc"])) {
                     <label class=" control-label"><span class="text-title">apellidos</span><span class="text-danger">*</span></label>
                     <input type="text" name="apellidos" class="apellidos-upd form-control" required>
                 </div>
-                <div class="form-group">
+                <div class="form-group select">
                     <label class=" control-label"><span class="text-title">cargo</span><span class="text-danger">*</span></label>
-                    <input type="text" name="cargo" value="" class="cargo-upd form-control">
+                    <select class="cargos select" name="cargo" id="select-cargo" aria-label=".form-select-sm example">
+                    </select>
                 </div>
                 <input type="submit" value="aceptar" class="aceptar btn-primary">
             </form>

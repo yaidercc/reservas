@@ -16,12 +16,10 @@ if (!isset($_SESSION['cedula'])) {
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-     <!-- Libreria jquery -->
-     <script src="librerias/jquery-3.5.1.slim.min.js"></script>
-
      <!-- Librerias boostrap -->
-     <script src="librerias/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-     <link rel="stylesheet" href="librerias/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+     <script src="librerias/bootstrap.bundle.min.js"></script>
+     <link rel="stylesheet" href="librerias/bootstrap.min.css" >
+
      <!--Libreria de iconos fontawesome-->
      <script src="https://kit.fontawesome.com/2efdabf6ca.js" crossorigin="anonymous"></script>
 
@@ -53,15 +51,15 @@ if (!isset($_SESSION['cedula'])) {
                          <ion-icon name="calendar"></ion-icon><span>reservar</span>
                     </a>
                     <?php
-                    //si el usuario es administrador se le asigna un nuevo item al menu de navegacion
-                    if ($_SESSION['tipo_usuario'] == 1) {
-                         echo "<a href='reportes.php?opc=10'>
-                              <ion-icon name='receipt'></ion-icon><span>reportes</span>
-                         </a>";
-                         echo "<a href='gestion_usuarios.php?opc=10'>
-                         <ion-icon name='people'></ion-icon><span>gestion de usuarios</span>
-                         </a>";
-                    }
+                         //si el usuario es administrador se le asigna un nuevo item al menu de navegacion
+                         if ($_SESSION['tipo_usuario'] == 1) {
+                              echo "<a href='reportes.php?opc=10'>
+                                   <ion-icon name='receipt'></ion-icon><span>reportes</span>
+                              </a>";
+                              echo "<a href='gestion_usuarios.php'>
+                              <ion-icon name='people'></ion-icon><span>gestion de usuarios</span>
+                              </a>";
+                         }
                     ?>
                     <a href="php/salir.php">
                          <ion-icon name="power"></ion-icon><span> salir</span>
@@ -112,12 +110,6 @@ if (!isset($_SESSION['cedula'])) {
                               <input type="text" id="modulo" name="modulo" class="modulo-grp form-control" readonly>
                          </div>
                     </div>
-
-
-                    <!--<div class="form group">
-                         <input type="submit" class="btn-primary" value="Elejir Modulo">
-                         <span>Modulo: </span>
-                    </div>-->
                </div>
                <input type="submit" class="btn-primary" name="person" value="Reservar" id="reservar" disabled>
 

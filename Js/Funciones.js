@@ -37,6 +37,7 @@ if (abrirpopup_add && btncerrar_add) {
     e.preventDefault();
     overlay_add.classList.remove("active");
     popup_add.classList.remove("active");
+    reloads();
   });
   //evento del boton abrir boton
   abrirpopup_add.addEventListener("click", function () {
@@ -153,9 +154,10 @@ if (document.getElementById("reservaciones")) {
 }
 
 /// FUNCIONES PARA LA TABLA DE USUARIOS
+var tablauser;
 if (document.getElementById("usuarios")) {
   $(document).ready(function () {
-    $("#usuarios").DataTable(language);
+    tablauser = $("#usuarios").DataTable(language);
   });
 }
 
@@ -420,9 +422,12 @@ jQuery(document).on("submit", "#adds-user-form", function (event) {
           showConfirmButton: false,
           timer: 2000,
         });
-        setTimeout(reloads, 2400);
       } else {
-        swal("incorrecto", "el numero de documento ya se encuentra registrado", "error");
+        swal(
+          "incorrecto",
+          "el numero de documento ya se encuentra registrado",
+          "error"
+        );
       }
       console.log("y a ver");
     })
@@ -534,28 +539,29 @@ $(document).on("click", ".editar", function () {
   $(".nombres-upd").val(nombres);
   $(".apellidos-upd").val(apellidos);
   $(".cargo-upd").val(cargo);
-  $(".nombre-upd_val").val(nombres);
   //EVENTO PARA TRAER DATOS AL SELECT
   jQuery
-      .ajax({
-        url: "php/gestionar_usuarios.php?case=cargos&id="+id,
-        type: "POST",
-        dataType: "json",
-        data: $(this).serialize(),
-        beforeSend: function () {},
-      })
-      .done(function (resp) {
-        if (resp.validacion) {
-          $('#select-cargo').html(resp.select);
-          
-        } 
-        
-      })
-      .fail(function (resp) {
-        alert("nodio")
-      });
+    .ajax({
+      url: "php/gestionar_usuarios.php?case=cargos&id=" + id,
+      type: "POST",
+      dataType: "json",
+      data: $(this).serialize(),
+      beforeSend: function () {},
+    })
+    .done(function (resp) {
+      if (resp.validacion) {
+        $("#select-cargo").html(resp.select);
+      }
+    })
+    .fail(function (resp) {
+      alert("nodio");
+    });
   //EVENTO SUBMIT DEL FORMULARIO DE ACTUALIZAR
   $(document).on("submit", "#updt-user-form", function (e) {
+    let cedula = $(".cedula-upd").val();
+    let nombre = $(".nombres-upd").val();
+    let apellidos = $(".apellidos-upd").val();
+    let cargo = document.getElementById("select-cargo");
     e.preventDefault();
     jQuery
       .ajax({
@@ -574,7 +580,11 @@ $(document).on("click", ".editar", function () {
             showConfirmButton: false,
             timer: 2000,
           });
-          setTimeout(recha, 2300);
+          fila.find("td:eq(1)").text(cedula);
+          fila.find("td:eq(2)").text(nombre);
+          fila.find("td:eq(3)").text(apellidos);
+          fila.find("td:eq(4)").text(cargo.options[cargo.selectedIndex].text);
+          console.log()
         } else {
           swal("Error", "correcto", "error");
         }
@@ -586,7 +596,8 @@ $(document).on("click", ".editar", function () {
 });
 
 //FUNCIION ELIMINAR USUARIO
-function Eliminarusuario(code) {
+function Eliminarusuario(code, fila, tabla) {
+  console.log(fila);
   parametros = { id_pro: code };
   $.ajax({
     data: parametros,
@@ -594,7 +605,7 @@ function Eliminarusuario(code) {
     type: "POST",
     beforeSend: function () {},
     success: function () {
-      recha();
+      tablauser.row(fila.find("td:eq(0)"), { page: "current" }).remove().draw();
     },
   });
 }
@@ -603,7 +614,12 @@ function recha() {
 }
 
 //ALERT ELIMINAR USUARIO
-function AlertarEliminar(code) {
+$(".eliminar").click(function () {
+  fila = $(this).closest("tr");
+  var tablauser = $("#usuarios").DataTable();
+  /*console.log(fila.find("td:eq(0)").text())*/
+  console.log(tablauser);
+
   Swal.fire({
     title: "Cuidado!",
     text: "Estas seguro que deseas eliminar este usuario?",
@@ -614,8 +630,7 @@ function AlertarEliminar(code) {
     confirmButtonText: "Si, eliminar",
   }).then((result) => {
     if (result.isConfirmed) {
-      Eliminarusuario(code);
-      console.log(code);
+      Eliminarusuario(parseInt(fila.find("td:eq(0)").text()), fila, tablauser);
     }
   });
-}
+});

@@ -147,13 +147,13 @@ if (!isset($_SESSION['cedula'])) {
                                 </a>
                             </td>
                             <td>
-                                <?php if ($row['cod_tipo_fk'] != 1) { ?>
+                                <?php if ($_SESSION['cedula']!=$row['cedula']) { ?>
                                     <a href="#" class="eliminar">
-                                        <ion-icon name="trash" onclick="AlertarEliminar(<?php echo $row['Id'] ?>)"></ion-icon>
+                                        <ion-icon name="trash"></ion-icon>
                                     </a>
                                 <?php
-                                }
-                                ?>
+                                }?>
+                                   
                             </td>
                         </tr>
                     <?php

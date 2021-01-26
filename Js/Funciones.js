@@ -81,6 +81,8 @@ if (abrirpopup_img && btncerrar_img) {
   });
 }
 
+
+
 // ===================== FUNCIONES DATATABLES =================
 
 // CAMBIAR LENGUAGE DE LA TABLA A ESPAÑOL
@@ -107,7 +109,7 @@ var language = {
   },
 };
 
-// FUNCIONES A LA TABLA DE RESERVACIONES
+// FUNCIONES A LA TABLA DE RESERVACIONES (SOLO SE EJECUTA LA FUNCION SI SE ESTA EN LA PAGIA DE REPORTES)
 if (document.getElementById("reservaciones")) {
   $(document).ready(function () {
     // INICIALIZAR DATATABLE Y ASIGNAR BOTONES DE PDF, EXCEL PARA REPORTES
@@ -132,6 +134,7 @@ if (document.getElementById("reservaciones")) {
           previous: "Anterior",
         },
       },
+      "order": [[ 3, "asc" ]],
       dom: "Bfrtip",
       buttons: [
         {
@@ -153,13 +156,38 @@ if (document.getElementById("reservaciones")) {
   });
 }
 
-/// FUNCIONES PARA LA TABLA DE USUARIOS
+/// FUNCIONES PARA LA TABLA DE USUARIOS (SOLO SE EJECUTA LA FUNCION SI SE ESTA EN LA PAGIA DE GESTION DE USUARIOS)
 var tablauser;
 if (document.getElementById("usuarios")) {
   $(document).ready(function () {
-    tablauser = $("#usuarios").DataTable(language);
+    tablauser = $("#usuarios").DataTable({
+      language: {
+        decimal: "",
+        emptyTable: "No hay información",
+        info: "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        infoEmpty: "Mostrando 0 to 0 of 0 Entradas",
+        infoFiltered: "(Filtrado de _MAX_ total entradas)",
+        infoPostFix: "",
+        thousands: ",",
+        lengthMenu: "Mostrar _MENU_ Entradas",
+        loadingRecords: "Cargando...",
+        processing: "Procesando...",
+        search: "Buscar:",
+        zeroRecords: "Sin resultados encontrados",
+        paginate: {
+          first: "Primero",
+          last: "Ultimo",
+          next: "Siguiente",
+          previous: "Anterior",
+        },
+      },
+      "order": [[ 0 , "asc" ]]
+    });
   });
 }
+
+
+
 
 //============= FUNCIONES PAGINA LOGIN ==========//
 
@@ -195,11 +223,16 @@ jQuery(document).on("submit", "#form-login", function (event) {
       }
     })
     .fail(function (resp) {
+      //SI HUBO ALGUN ERROR CON LA CONSULTA 
       swal("Error", "error inesperado al realizar la consulta", "error");
       $("#mostrar").val("Ingresar");
     })
     .always(function () {});
 });
+
+
+
+
 
 //============== FUNCIONES PAGINA RESERVAS ============//
 
@@ -210,6 +243,8 @@ jQuery(document).on("click", "#select-modulo", function (event) {
   var hinicio = $("#hora_in").val();
   var hfinal = $("#hora_fin").val();
   var fecha = $(".fecha").val();
+
+  //VERIFICAR QUE LOS CAMPOS NO ESTEN VACIOS
   if (hinicio == "" || hfinal == "" || fecha == "") {
     if (hfinal == "") {
       $("#hora_fin").addClass("is-invalid");
@@ -224,52 +259,29 @@ jQuery(document).on("click", "#select-modulo", function (event) {
     $("#hora_in").removeClass("is-invalid");
     $("#hora_fin").removeClass("is-invalid");
     $(".fecha").removeClass("is-invalid");
+    //EVENTO VALIDATE, PARA QUE LOS HORARIOS NO ESTEN MAL INSERTADOS ES DECIR, EN CASO DE QUE LA HORA FINAL SEA MENOR A LA INICIAL POR EJEMPLO
     if (validate($("#hora_in").val(), $("#hora_fin").val())) {
+      //METODO PARA BUSCAR MODULOS
       buscar(modulo, hinicio, hfinal, fecha);
     } else {
+      //MANDA ERROR SI LOS HORARIOS ESTAN MAL INSERTADOS
       swal(
         "Error en los horarios",
         "la hora de incio o la hora final son incorrectas",
         "error"
       );
+      //DESHABILITA EL BOTON DE ACEPTAR EN EL POP-UP DE MODULOS
       $("#aceptar").prop("disabled", true);
     }
   }
-  console.log($(".citas"));
 });
 
-/*
-//EVENTO PARA SELECCIONAR MODUIL
-$("input[type='radio']").on("change", this, function () {
-  valor = $(this).val();
-  $("#select-modulo").prop("disabled", false);
-  $("#select-modulo").on("click", function () {
-    Swal.fire({
-      title: "Adevertencia!",
-      text: "Estas seguro que deseas seleccionar este modulo?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si, seleccionar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        $("#modulo").attr("value", valor);
-        $("#modulo").addClass("is-valid");
-        overlay.classList.add("active");
-        popup.classList.add("active");
-      } else {
-        $("input[type=radio]").prop("checked", false);
-        console.log("declined");
-      }
-    });
-  });
-});*/
 
 //refrescar pagina
 function reloads() {
   location.reload();
 }
+
 
 //FUNCION PARA BUSCAR MODULOS
 function buscar(modulo, hinicio, hfinal, fecha) {
@@ -302,12 +314,16 @@ function buscar(modulo, hinicio, hfinal, fecha) {
       }
     })
     .fail(function (resp) {
+      //SI HAY ALGUN ERROR CON LA CONSULTA
       swal("Error", "error inesperado al realizar la consulta", "error");
     });
 }
 
-// PONERL EL VALOR DEL RADIO BUTTON EN UN CAMPO DE TEXTO
+
+
+// PONER EL VALOR DEL RADIO BUTTON EN EL CAMPO DE CITAS
 $("#elejir").on("click", function () {
+  // EN CASO DE QUE EL MODULO ESTE OCUPADO, SE MUESTRA UN MODULO CON UN ENLACE EL CUAL LE VA A MOSTRAR LOS HORARIOS EN LOS QUE EL MODULO NO ESTA DISPONIBLE EN UNA ALERTA
   $("body").on("click", ".modulo .citas", function () {
     swal(
       "Horarios No Disponibles Para Este Modulo",
@@ -320,26 +336,32 @@ $("#elejir").on("click", function () {
       var valorRadio = $(this).attr("value");
       $("#num_modulo").val(valorRadio);
       $("#aceptar").prop("disabled", false);
+
       /// GUARDA LOS VALORES DE LOS CAMPOS ////
       let fecha = $(".fecha").val();
       let horainicio = $(".hora.Horin").val();
       let horafin = $(".hora.Hfinal").val();
       let numModulo = $("#num_modulo").val();
       jQuery(document).on("click", "#aceptar", function (event) {
+
         /// asignar el valor de un modulo a la variable
         $("#num_modulo").val(valorRadio);
+
         /// ASIGNAR A LOS CAMPOS DEL FORMULARIO DE ENVIAR RESERVA /////
         $(".fecha-fin").val(fecha);
         $(".horin").val(horainicio);
         $(".hfinal").val(horafin);
         $("#modulo").prop("display", "block");
         $("#modulo").val(numModulo);
+        //CIERRA EL POP-UP DE MODULOS
         overlay.classList.remove("active");
         popup.classList.remove("active");
         $("#reservar").prop("disabled", false);
       });
     });
 });
+
+
 
 //EVENTO DEL FORMULARIO ENVIAR RESERVA
 $(document).on("submit", "#form-reservar", function (event) {
@@ -367,6 +389,8 @@ $(document).on("submit", "#form-reservar", function (event) {
     });
 });
 
+
+
 //FUNCION PARA VERIFICAR QUE LOS HORARIOS NO ESTEN MAL PUESTOS
 function validate(dt1, dt2) {
   var jdt1 = Date.parse("20 Aug 2000 " + dt1);
@@ -384,6 +408,8 @@ function validate(dt1, dt2) {
   }
 }
 
+
+
 //FUNCION PARA BLOQUEAR FECHAS ANTERIORES A LA ACTUAL
 $(document).ready(function () {
   var fecha = new Date();
@@ -399,8 +425,10 @@ $(document).ready(function () {
   var año = fecha.getFullYear();
   var completa = año + "-" + mes + "-" + dia;
   $(".fecha").attr("min", completa);
-  console.log(mes);
+
 });
+
+
 
 //EVENTO DE REGISTRAR USUARIO
 jQuery(document).on("submit", "#adds-user-form", function (event) {
@@ -422,6 +450,28 @@ jQuery(document).on("submit", "#adds-user-form", function (event) {
           showConfirmButton: false,
           timer: 2000,
         });
+        let datos_user={
+          id:resp.id,
+          cedula:resp.cedula,
+          nombre:resp.nombre,
+          apellido:resp.apellidos,
+          cargo:resp.cargo,
+          editar:'<a href="#" class="editar"> <ion-icon name="pencil"></ion-icon></a>',
+          eliminar:'<a href="#" class="eliminar"><ion-icon name="trash"></ion-icon></a>'
+        }
+        console.log(datos_user)
+        
+        tablauser = $('#usuarios').DataTable();
+        tablauser.row.add( [
+          resp.id,
+          resp.cedula,
+          resp.nombre,
+          resp.apellidos,
+          resp.cargo,
+          '<a href="#" class="eliminar"><ion-icon name="pencil"></ion-icon></a>',
+          '<a href="#" class="editar"> <ion-icon name="pencil"></ion-icon></a>'
+         
+      ] ).draw( false );
       } else {
         swal(
           "incorrecto",
@@ -438,83 +488,8 @@ jQuery(document).on("submit", "#adds-user-form", function (event) {
     .always(function () {});
 });
 
-/*
-//CREAR ARCHIVO EXCEL
-function exportTableToExcel(tableID, filename = "") {
-  var downloadLink;
-  var dataType = "application/vnd.ms-excel";
-  var tableSelect = document.getElementById(tableID);
-  var tableHTML = tableSelect.outerHTML.replace(/ /g, "%20");
-  // especifica el nombre del archivo y su extension
-  filename = filename ? filename + ".xls" : "Reportes.xls";
-  // crear link  de descarga
-  downloadLink = document.createElement("a");
-  // le asigna un elemento hijo al body en este caso el link de descarga
-  document.body.appendChild(downloadLink);
-  //proceso para descargar el archivo en el pc
-  console.log(navigator.msSaveOrOpenBlob);
-  if (navigator.msSaveOrOpenBlob) {
-    //instancia un objeto blob con la tabla
-    var blob = new Blob(["ufeff", tableHTML], {
-      type: dataType,
-    });
-    navigator.msSaveOrOpenBlob(blob, filename);
-  } else {
-    // Crea un enlace al archivo
-    downloadLink.href = "data:" + dataType + ", " + tableHTML;
-    // Establece el nombre del archivo
-    downloadLink.download = filename;
-    // activa la funcion
-    downloadLink.click();
-  }
-}*/
 
-/*
-//OBTIENE EL VALOR DE UNA VARIABLE QUE ESTA EN LA URL
-function getParameterByName(name) {
-  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-    results = regex.exec(location.search);
-  return results === null
-    ? ""
-    : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
-*/
-/*
-//REEMPLAZA EL VALOR DE UNA VARIABLE DE LA URL
-function replace_url_param(url, param_name, new_value) {
-  //obtiene desde la primer parte del link hasta donde empiezan las variables
-  var base = url.substr(0, url.indexOf("?"));
-  //obtiene desde donde empiezan las variables hasta el final del link
-  var query = url.substr(url.indexOf("?") + 1, url.length);
-  //mete los elementos que estan separados por una & en una especie de array
-  var a_query = query.split("&");
-  //recorre el array creado
-  for (var i = 0; i < a_query.length; i++) {
-    //guarda el nombre de la variable
-    var name = a_query[i].split("=")[0];
-    //guarda el valor de la variable
-    var value = a_query[i].split("=")[1];
-    //compara si es la variable que se esta buscando
-    if (name == param_name) a_query[i] = param_name + "=" + new_value;
-  }
-  // retorna el valor que halla encontrado
-  return base + "?" + a_query.join("&");
-}*/
 
-/*idenificar que opcion del select se cambio
-var select = document.getElementById("select");
-if (select) {
-  select.addEventListener("change", function () {
-    var selectedOption = this.options[select.selectedIndex];
-    console.log(selectedOption.value + ": " + selectedOption.text);
-    location.href = replace_url_param(
-      location.href,
-      "opc",
-      selectedOption.value
-    );
-  });
-}*/
 
 // ========== FUNCIONES PAGINA GESTION DE USUARIOS ================
 
@@ -595,6 +570,8 @@ $(document).on("click", ".editar", function () {
   });
 });
 
+
+
 //FUNCIION ELIMINAR USUARIO
 function Eliminarusuario(code, fila, tabla) {
   console.log(fila);
@@ -609,28 +586,60 @@ function Eliminarusuario(code, fila, tabla) {
     },
   });
 }
-function recha() {
-  location.reload();
-}
+
 
 //ALERT ELIMINAR USUARIO
-$(".eliminar").click(function () {
-  fila = $(this).closest("tr");
-  var tablauser = $("#usuarios").DataTable();
-  /*console.log(fila.find("td:eq(0)").text())*/
-  console.log(tablauser);
+if(document.getElementsByClassName("eliminar")){
+  $(".eliminar").click(function () {
+    fila = $(this).closest("tr");
+    var tablauser = $("#usuarios").DataTable();
 
-  Swal.fire({
-    title: "Cuidado!",
-    text: "Estas seguro que deseas eliminar este usuario?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Si, eliminar",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Eliminarusuario(parseInt(fila.find("td:eq(0)").text()), fila, tablauser);
-    }
+    console.log("ojito");
+  
+    Swal.fire({
+      title: "Cuidado!",
+      text: "Estas seguro que deseas eliminar este usuario?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, eliminar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Eliminarusuario(parseInt(fila.find("td:eq(0)").text()), fila, tablauser);
+      }
+    });
   });
-});
+}
+
+
+
+// evento para agregarle una miga de pan al enlace correspondiente en el nav
+$(document).ready(function(){
+  //captura el id del enlace de gestion de usuarios
+  let gestion=$("#link-gestion");
+  //captura el id del enlace de reportes
+  let reportes=$("#link-reportes");
+  //captura el id del enlace de reservas
+  let reservas=$("#link-reservas");
+  //verifica si existen 
+  if(gestion && reportes){
+    //expresion regular para ver si se esta en la pagina de reportes
+    let regex=/reportes/;
+    //ejecuta la expresion con el link
+    if(regex.test(location.href)){
+      //le agrega la clase miga al enlace repotes 
+      reportes.attr("class","miga")
+    }else{
+      let regex=/gestion_usuarios/;
+      if(regex.test(location.href)){
+        gestion.attr("class","miga")
+      }else{
+        reservas.attr("class","miga")
+      }
+      //si no esta en la pagina de reportes le agrega la clase miga al enlace gestion de usuarios 
+      
+    }
+    
+  }
+})

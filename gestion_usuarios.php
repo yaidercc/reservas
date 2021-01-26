@@ -18,19 +18,14 @@ if (!isset($_SESSION['cedula'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Librerias de fuentes-->
-<link rel="preconnect" href="https://fonts.gstatic.com">
-     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,500;0,700;0,900;1,100;1,500;1,700;1,900&display=swap" rel="stylesheet"> 
-     
-   
      <!-- Libreria jquery -->
-     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+     <script src="librerias/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
        <!-- Lubreria Boostrap 4 -->
-       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+       <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+     <script src="bootstrap/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
      <!-- Libreria fontawesome-->
-     <script src="https://kit.fontawesome.com/2efdabf6ca.js" crossorigin="anonymous"></script>
+     <script src="librerias/fontawesome.js" crossorigin="anonymous"></script>
 
      <!--resetear estilos predeterminados-->
      <link rel="stylesheet" href="Css/normalice.css" crossorigin="anonymous">
@@ -44,42 +39,7 @@ if (!isset($_SESSION['cedula'])) {
 </head>
 
 <body>
-    <header>
-        <nav class="navegacion-reservas">
-            <div class="menu-burger">
-                <a href="#">
-                    <ion-icon name="menu"></ion-icon>
-                </a>
-            </div>
-            <div class="logo">
-                <img id="logo-air" src="img/logo_airplan.png" height="100px" width="100px">
-            </div>
-            <div class="enlaces">
-                <a href="reservas.php">
-                    <ion-icon name="calendar"></ion-icon><span>reservar</span>
-                </a>
-                <!--imprimir datos de los usuarios que tengan que ver con el filtro-->
-                <?php
-                if ($_SESSION['tipo_usuario'] == 1) {
-                    echo "<a href='reportes.php?opc=10'>
-                         <ion-icon name='receipt'></ion-icon><span>reportes</span>
-                    </a>";
-                    echo "<a href='gestion_usuarios.php?opc=10' class='miga'>
-                    <ion-icon name='people'></ion-icon><span>gestion de usuarios</span>
-                    </a>";
-                }
-                ?>
-                <a href="php/salir.php">
-                    <ion-icon name="power"></ion-icon><span> salir</span>
-                </a>
-            </div>
-        </nav>
-    </header>
-    <!--buscar por datos del usuario
-     <form action="buscar_usuario.php" method="GET">
-          <input type="text" placeholder="buscar" id="busqueda" name="busqueda" class="form-control">
-          <input type="submit" value="buscar" class="btn_buscar btn-primary">
-     </form>-->
+   <?php include "nav.php";?>
     <div class="container-general">
         <!--filtrar por fecha-->
         <h1 class="titulo">listado de usuarios</h1>
@@ -108,27 +68,7 @@ if (!isset($_SESSION['cedula'])) {
             </thead>
             <tbody>
                 <?php
-                // cuenta la cantidad de tuplas que tienen relacion con la consulta
-                /*$cantidades = mysqli_query($conexion, "SELECT COUNT(*) as cantidad FROM `empleados`");
-                //covierte en un array los datos que trajo de la bd
-                $resultados = mysqli_fetch_array($cantidades);
-                // mete la cantidad registros en una variable
-                $total_registros = $resultados['cantidad'];
-                //cantidad de registros que se van a mostrar en la tabla
-                $por_pagina =  $_REQUEST['opc'];
-                //verifica que pagina ha sido seleccionada o en que pagina esta
-                if (empty($_GET['pagina'])) {
-                    // si no hay nada pone la primera pagina
-                    $pagina = 1;
-                } else {
-                    //si hay algo obtiene el valor
-                    $pagina = $_GET['pagina'];
-                }
-                //operacion para ver desde que numero de los registros de la bd, debe traer
-                $desde = ($pagina - 1) * $por_pagina;
-                //operacion para ver hasta que numero de los registros de la bd, debe traer
-                $total = ceil($total_registros / $por_pagina);
-                //consultar los registros que tengan que ver con la consulta*/
+                //consulta los empleados con su cargo
                 $consultar = mysqli_query($conexion, "SELECT * FROM `empleados` e right join `cargos` c ON c.ID=e.id_cargo_fk ORDER BY Nombres ASC ");
                 //verifica el numero de tuplas que se hayan encontrado
                 $cantidades = mysqli_num_rows($consultar);

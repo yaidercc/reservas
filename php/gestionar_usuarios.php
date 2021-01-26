@@ -4,14 +4,20 @@ switch ($_GET['case']) {
     case 'agregar':
         $Registrar_usuario = mysqli_query($conexion, "CALL agregar_usuario($_POST[cedula],upper('$_POST[nombres]'),upper('$_POST[apellidos]'),$_POST[cargo])");
         if ($Registrar_usuario) {
-            echo json_encode(array("validacion" => true));
+            $datos_user=mysqli_query($conexion,"SELECT * FROM empleados inner join cargos ON cargos.ID=$_POST[cargo]  WHERE cedula=$_POST[cedula]");
+            $data=mysqli_fetch_assoc($datos_user);
+            echo json_encode(array("validacion" => true,"id"=>$data['Id'],"cedula"=>$data['cedula'],"nombre"=>$data['Nombres'],"apellidos"=>$data['Apellidos'],"cargo"=>$data['NOMBRE_CARGO']));
         } else {
-            echo json_encode(array("validacion" => false));
+            echo json_encode(array("validacion" => false,"CALL agregar_usuario($_POST[cedula],upper('$_POST[nombres]'),upper('$_POST[apellidos]'),$_POST[cargo])"));
         }
         break;
     case 'eliminar':
         $eliminar_usuario = mysqli_query($conexion, "CALL eliminar_usuario($_GET[id])");
-
+        if ($eliminar_usuario) {
+            echo json_encode(array("validacion" => true,"CALL eliminar_usuario($_GET[id])"));
+        } else {
+            echo json_encode(array("validacion" => false,"CALL eliminar_usuario($_GET[id])"));
+        }
         break;
 
     case 'modificar':

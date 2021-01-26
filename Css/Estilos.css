@@ -6,6 +6,7 @@ html {
 }
 body {
   text-transform: capitalize;
+  font-family: "Roboto", sans-serif;
 }
 /*git remote add origin https://github.com/yaidercc/reservas_full.git*/
 /*//////////////////////////// Estilos del login ///////////////////////////////////*/

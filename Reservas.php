@@ -21,7 +21,7 @@ if (!isset($_SESSION['cedula'])) {
      <link rel="stylesheet" href="librerias/bootstrap.min.css" >
 
      <!--Libreria de iconos fontawesome-->
-     <script src="https://kit.fontawesome.com/2efdabf6ca.js" crossorigin="anonymous"></script>
+     <script src="librerias/fontawesome.js" crossorigin="anonymous"></script>
 
      <!--resetear estilos predeterminados de la pagina-->
      <link rel="stylesheet" href="Css/normalice.css" crossorigin="anonymous">
@@ -35,38 +35,7 @@ if (!isset($_SESSION['cedula'])) {
 </head>
 
 <body>
-     <header>
-          <!--MENU DE NAVEGACION-->
-          <nav class="navegacion-reservas">
-               <div class="menu-burger">
-                    <a href="#">
-                         <ion-icon name="menu"></ion-icon>
-                    </a>
-               </div>
-               <div class="logo">
-                    <img id="logo-air" src="img/logo_airplan.png" height="100px" width="100px">
-               </div>
-               <div class="enlaces">
-                    <a href="#" class="miga">
-                         <ion-icon name="calendar"></ion-icon><span>reservar</span>
-                    </a>
-                    <?php
-                         //si el usuario es administrador se le asigna un nuevo item al menu de navegacion
-                         if ($_SESSION['tipo_usuario'] == 1) {
-                              echo "<a href='reportes.php?opc=10'>
-                                   <ion-icon name='receipt'></ion-icon><span>reportes</span>
-                              </a>";
-                              echo "<a href='gestion_usuarios.php'>
-                              <ion-icon name='people'></ion-icon><span>gestion de usuarios</span>
-                              </a>";
-                         }
-                    ?>
-                    <a href="php/salir.php">
-                         <ion-icon name="power"></ion-icon><span> salir</span>
-                    </a>
-               </div>
-          </nav>
-     </header>
+<?php include "nav.php";?>
      
      <!--boton de vista de oficinas-->
      <div class="container-imagen">
